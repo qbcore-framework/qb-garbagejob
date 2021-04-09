@@ -166,7 +166,7 @@ function PayCheckLoop(location)
                 DrawMarker(2, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
                 if distance < 1.5 then
                     DrawText3D(coords.x, coords.y, coords.z, "~g~E~w~ - Payslip")
-                    if IsControlJustPressed(0, Keys["E"]) then
+                    if IsControlJustPressed(0, 38) then
                         TriggerServerEvent('qb-garbagejob:server:PayShit', Earnings, location)
                         Earnings = 0
                     end
@@ -195,7 +195,7 @@ Citizen.CreateThread(function()
                     if distance < 1.5 then
                         if InVehicle then
                             DrawText3D(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, "~g~E~w~ - Store Garbage Truck")
-                            if IsControlJustReleased(0, Keys["E"]) then
+                            if IsControlJustReleased(0, 38) then
                                 QBCore.Functions.TriggerCallback('qb-garbagejob:server:CheckBail', function(DidBail)
                                     if DidBail then
                                         BringBackCar()
@@ -207,7 +207,7 @@ Citizen.CreateThread(function()
                             end
                         else
                             DrawText3D(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, "~g~E~w~ - Garabge Truck")
-                            if IsControlJustReleased(0, Keys["E"]) then
+                            if IsControlJustReleased(0, 38) then
                                 QBCore.Functions.TriggerCallback('qb-garbagejob:server:HasMoney', function(HasMoney)
                                     if HasMoney then
                                         local coords = Config.Locations["vehicle"].coords
