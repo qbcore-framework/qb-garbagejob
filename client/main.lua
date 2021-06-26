@@ -211,7 +211,7 @@ Citizen.CreateThread(function()
                                         QBCore.Functions.SpawnVehicle("trash2", function(veh)
                                             GarbageVehicle = veh
                                             SetVehicleNumberPlateText(veh, "GARB"..tostring(math.random(1000, 9999)))
-                                            SetEntityHeading(veh, coords.h)
+                                            SetEntityHeading(veh, coords.w)
                                             exports['LegacyFuel']:SetFuel(veh, 100.0)
                                             TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                                             SetEntityAsMissionEntity(veh, true, true)
