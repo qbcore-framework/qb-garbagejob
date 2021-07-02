@@ -1,6 +1,3 @@
-QBCore = nil
-TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-
 local Bail = {}
 
 QBCore.Functions.CreateCallback('qb-garbagejob:server:HasMoney', function(source, cb)
