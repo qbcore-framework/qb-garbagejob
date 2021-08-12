@@ -43,7 +43,6 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
-    isLoggedIn = true
     GarbageVehicle = nil
     hasVuilniswagen = false
     hasZak = false
@@ -278,9 +277,9 @@ Citizen.CreateThread(function()
                                             if IsControlJustPressed(0, 51) then
                                                 hasZak = false
                                                 local AmountOfLocations = #Config.Locations["trashcan"]
-                                                -- Kijkt of je alle zakken hebt afgeleverd
+                                                -- Checks if you've delivered all the bags
                                                 if (AmountOfBags - 1) == 0 then
-                                                    -- Alle zakken afgeleverd
+                                                    -- Delivered all the bags
                                                     Earnings = Earnings + math.random(60, 90)
                                                     if (GarbageLocation + 1) <= AmountOfLocations then
                                                         -- Here he puts your next location and you are not finished working yet.
