@@ -2,8 +2,8 @@ isLoggedIn = false
 PlayerJob = {}
 
 local GarbageVehicle = nil
-local hasVuilniswagen = false
-local hasZak = false
+local hasGarbageTruck = false
+local hasGarbageBag = false
 local GarbageLocation = 0
 local DeliveryBlip = nil
 local IsWorking = false
@@ -19,8 +19,8 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
     PlayerJob = QBCore.Functions.GetPlayerData().job
     GarbageVehicle = nil
-    hasVuilniswagen = false
-    hasZak = false
+    hasGarbageTruck = false
+    hasGarbageBag = false
     GarbageLocation = 0
     DeliveryBlip = nil
     IsWorking = false
@@ -44,8 +44,8 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     GarbageVehicle = nil
-    hasVuilniswagen = false
-    hasZak = false
+    hasGarbageTruck = false
+    hasGarbageBag = false
     GarbageLocation = 0
     DeliveryBlip = nil
     IsWorking = false
@@ -131,8 +131,8 @@ function BringBackCar()
         PayCheckLoop(GarbageLocation)
     end
     GarbageVehicle = nil
-    hasVuilniswagen = false
-    hasZak = false
+    hasGarbageTruck = false
+    hasGarbageBag = false
     GarbageLocation = 0
     DeliveryBlip = nil
     IsWorking = false
@@ -207,7 +207,7 @@ Citizen.CreateThread(function()
                                             SetEntityAsMissionEntity(veh, true, true)
                                             TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                                             SetVehicleEngineOn(veh, true, true)
-                                            hasVuilniswagen = true
+                                            hasGarbageTruck = true
                                             GarbageLocation = 1
                                             IsWorking = true
                                             SetGarbageRoute()
@@ -244,19 +244,19 @@ Citizen.CreateThread(function()
                             local DeliveryData = Config.Locations["trashcan"][GarbageLocation]
                             local Distance = #(pos - vector3(DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z))
 
-                            if Distance < 20 or hasZak then
+                            if Distance < 20 or hasGarbageBag then
                                 LoadAnimation('missfbi4prepp1')
                                 DrawMarker(2, DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 255, 55, 22, 255, false, false, false, false, false, false, false)
-                                if not hasZak then
+                                if not hasGarbageBag then
                                     if CanTakeBag then
                                         if Distance < 1.5 then
                                             DrawText3D2(DeliveryData.coords, "~g~E~w~ - Grab a garbage bag")
                                             if IsControlJustPressed(0, 51) then
                                                 if AmountOfBags == 0 then
-                                                    -- Hier zet ie hoeveel zakken er moeten worden afgeleverd als het nog niet bepaald is
+                                                    -- Randomizes how many bags to deliver
                                                     AmountOfBags = math.random(3, 5)
                                                 end
-                                                hasZak = true
+                                                hasGarbageBag = true
                                                 TakeAnim()
                                             end
                                         elseif Distance < 10 then
@@ -275,7 +275,7 @@ Citizen.CreateThread(function()
                                         if TruckDist < 2 then
                                             DrawText3D(Coords.x, Coords.y, Coords.z, "~g~E~w~ - Dispose of Garbage Bag")
                                             if IsControlJustPressed(0, 51) then
-                                                hasZak = false
+                                                hasGarbageBag = false
                                                 local AmountOfLocations = #Config.Locations["trashcan"]
                                                 -- Checks if you've delivered all the bags
                                                 if (AmountOfBags - 1) == 0 then
@@ -291,23 +291,23 @@ Citizen.CreateThread(function()
                                                         SetGarbageRoute()
                                                         QBCore.Functions.Notify("All garbage bags are done, proceed to the next location!")
                                                     else
-                                                        -- Hier ben je klaar met werken.
+                                                        -- Finished work
                                                         QBCore.Functions.Notify("You are done working! Go back to the depot.")
                                                         IsWorking = false
                                                         RemoveBlip(DeliveryBlip)
                                                         SetRouteBack()
                                                     end
                                                     AmountOfBags = 0
-                                                    hasZak = false
+                                                    hasGarbageBag = false
                                                 else
-                                                    -- Hier heb je nog niet alle zakken afgeleverd
+                                                    -- Didn't deliver all the bags yet
                                                     AmountOfBags = AmountOfBags - 1
                                                     if AmountOfBags > 1 then
                                                         QBCore.Functions.Notify("There are still "..AmountOfBags.." bags left!")
                                                     else
                                                         QBCore.Functions.Notify("There is still "..AmountOfBags.." bags over there!")
                                                     end
-                                                    hasZak = false
+                                                    hasGarbageBag = false
                                                 end
                                                 DeliverAnim()
                                             end
@@ -387,7 +387,7 @@ function AnimCheck()
         while true do
             local ped = PlayerPedId()
 
-            if hasZak then
+            if hasGarbageBag then
                 if not IsEntityPlayingAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 3) then
                     ClearPedTasksImmediately(ped)
                     LoadAnimation('missfbi4prepp1')
