@@ -91,7 +91,6 @@ QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, c
 
     if(distance < 10) then
         if Routes[CitizenId] ~= nil then
-            Player.Functions.AddMoney("bank",Routes[CitizenId].depositPay, "garbage-deposit-back")
             cb(true)
         else
             cb(false)
@@ -109,8 +108,9 @@ AddEventHandler('garbagejob:server:PayShift', function()
     local CitizenId = Player.PlayerData.citizenid
 
     if Routes[CitizenId] ~= nil then
-        Player.Functions.AddMoney("bank", Routes[CitizenId].actualPay , 'garbage-payslip')
-        TriggerClientEvent('QBCore:Notify', src, "You have $"..Routes[CitizenId].actualPay..", your payslip got paid to your bank account!", "success")
+        local totalToPay = Routes[CitizenId].depositPay + Routes[CitizenId].actualPay
+        Player.Functions.AddMoney("bank", totalToPay , 'garbage-payslip')
+        TriggerClientEvent('QBCore:Notify', src, "You have $"..totalToPay..", your payslip (+ deposit) got paid to your bank account!", "success")
         Routes[CitizenId] = nil
     else
         TriggerClientEvent('QBCore:Notify', source, 'You never clocked on!', "error")

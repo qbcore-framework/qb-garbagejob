@@ -161,7 +161,7 @@ Citizen.CreateThread(function()
                                 QBCore.Functions.TriggerCallback('garbagejob:server:EndShift', function(endShift)
                                     if endShift then
                                         BringBackCar()
-                                        QBCore.Functions.Notify("You have $"..Config.TruckPrice..", deposit returned!")
+                                        QBCore.Functions.Notify("Truck returned, collect your payslip to recieve your pay and deposit back!")
                                     else
                                         QBCore.Functions.Notify("You have no deposit paid on this vehicle..")
                                         currentStopNum = 0
