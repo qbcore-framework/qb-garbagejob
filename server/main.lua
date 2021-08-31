@@ -110,7 +110,7 @@ AddEventHandler('garbagejob:server:PayShift', function()
     if Routes[CitizenId] ~= nil then
         local totalToPay = Routes[CitizenId].depositPay + Routes[CitizenId].actualPay
         Player.Functions.AddMoney("bank", totalToPay , 'garbage-payslip')
-        TriggerClientEvent('QBCore:Notify', src, "You have $"..totalToPay..", your payslip (+ deposit) got paid to your bank account!", "success")
+        TriggerClientEvent('QBCore:Notify', src, "You got $"..totalToPay..", your payslip (+ deposit) got paid to your bank account!", "success")
         Routes[CitizenId] = nil
     else
         TriggerClientEvent('QBCore:Notify', source, 'You never clocked on!', "error")
