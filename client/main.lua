@@ -177,14 +177,15 @@ Citizen.CreateThread(function()
 
                                         local coords = Config.Locations["vehicle"].coords
                                         QBCore.Functions.SpawnVehicle("trash2", function(veh)
+                                            TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) -- hopefully this fixes an issue if something is delayed they'll get crushed
+                                            SetVehicleEngineOn(veh, true, true)
+
                                             garbageVehicle = veh
                                             SetVehicleNumberPlateText(veh, "GARB"..tostring(math.random(1000, 9999)))
                                             SetEntityHeading(veh, coords)
                                             exports['LegacyFuel']:SetFuel(veh, 100.0)
-                                            TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                                             SetEntityAsMissionEntity(veh, true, true)
                                             TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-                                            SetVehicleEngineOn(veh, true, true)
                                             currentStop = firstStop
                                             currentStopNum = 1
                                             amountOfBags = totalBags
