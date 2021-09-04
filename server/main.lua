@@ -29,6 +29,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
             depositPay = Config.TruckPrice,
             actualPay = 0,
             stopsCompleted = 0,
+            totalNumberOfStops = #allStops
         }
 
         nextStop = allStops[1].stop
@@ -76,6 +77,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
             end
 
             Routes[CitizenId].actualPay = math.ceil(Routes[CitizenId].actualPay + totalNewPay)
+            Routes[CitizenId].stopsCompleted = Routes[CitizenId].stopsCompleted + 1
         end
     else
         TriggerClientEvent('QBCore:Notify', source, 'You are too far away from the dropoff point', "error")
@@ -108,7 +110,15 @@ AddEventHandler('garbagejob:server:PayShift', function()
     local CitizenId = Player.PlayerData.citizenid
 
     if Routes[CitizenId] ~= nil then
-        local totalToPay = Routes[CitizenId].depositPay + Routes[CitizenId].actualPay
+        local depositPay = Routes[CitizenId].depositPay
+        if Routes[CitizenId].stopsCompleted < Routes[CitizenId].totalNumberOfStops then
+            -- local totalComplete = math.floor((Routes[CitizenId].stopsCompleted/Routes[CitizenId].totalNumberOfStops) * 100)
+            -- depositPay = math.ceil((totalComplete/Routes[CitizenId].depositPay) * 100)
+            depositPay = 0
+            TriggerClientEvent('QBCore:Notify', src, "Due to early finish, your deposit will not be returned.", "error")
+        end
+
+        local totalToPay = depositPay + Routes[CitizenId].actualPay
         Player.Functions.AddMoney("bank", totalToPay , 'garbage-payslip')
         TriggerClientEvent('QBCore:Notify', src, "You got $"..totalToPay..", your payslip (+ deposit) got paid to your bank account!", "success")
         Routes[CitizenId] = nil
