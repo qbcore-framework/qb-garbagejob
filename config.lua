@@ -1,19 +1,41 @@
 Config = {}
 
-Config.BailPrice = 250
+-- Price taken and given back when delivered a truck
+Config.TruckPrice = 250
+
+-- Want to give out a cryptostick per stop?
+Config.GiveCryptoStick = true
+
+-- Has to roll this number or higher to receive a cryptostick
+Config.CryptoStickChance = 75
+
+-- How many stops minimum should the job roll?
+Config.MinStops = 5
+
+-- Upper worth per bag
+Config.BagUpperWorth = 75
+
+-- Lower worth per bag
+Config.BagLowerWorth = 50
+
+-- Minimum bags per stop
+Config.MinBagsPerStop = 2
+
+-- Maximum bags per stop
+Config.MaxBagsPerStop = 5
 
 Config.Locations = {
     ["main"] = {
         label = "Garbage Depot",
-        coords = vector4(-350.08, -1569.95, 25.22, 292.42),
+        coords = vector3(-313.84, -1522.82, 27.56),
     },
     ["vehicle"] = {
         label = "Garbage Truck Storage",
-        coords = vector4(-340.74, -1561.82, 25.23, 58.0),
+        coords = vector4(-313.84, -1522.82, 27.56, 258.62),
     },
     ["paycheck"] = {
         label = "Paycheck",
-        coords = vector4(-346.68, -1572.39, 25.22, 163.5), 
+        coords = vector3(-321.45, -1545.86, 31.02),
     },
     ["trashcan"] ={
         [1] = {

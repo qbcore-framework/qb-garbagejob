@@ -1,10 +1,10 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'QB-GarbageJob'
+description 'QB-GarbageJob V2'
 version '1.0.0'
 
-shared_scripts { 
+shared_scripts {
 	'@qb-core/import.lua',
 	'config.lua'
 }
