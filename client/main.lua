@@ -74,6 +74,11 @@ AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     playerJob = JobInfo
 end)
 
+RegisterNetEvent('garbagejob:client:SetWaypointHome')
+AddEventHandler('garbagejob:client:SetWaypointHome', function()
+    SetNewWaypoint(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y)
+end)
+
 function DrawText3D(x, y, z, text)
     SetTextScale(0.35, 0.35)
     SetTextFont(4)

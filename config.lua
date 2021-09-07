@@ -13,7 +13,7 @@ Config.CryptoStickChance = 75
 Config.MinStops = 5
 
 -- Upper worth per bag
-Config.BagUpperWorth = 75
+Config.BagUpperWorth = 100
 
 -- Lower worth per bag
 Config.BagLowerWorth = 50
@@ -23,6 +23,10 @@ Config.MinBagsPerStop = 2
 
 -- Maximum bags per stop
 Config.MaxBagsPerStop = 5
+
+-- WIP: Do not use
+-- If you want to use custom routes instead of random amount of stops stops set to true
+Config.UsePreconfiguredRoutes = false
 
 Config.Locations = {
     ["main"] = {
@@ -34,7 +38,7 @@ Config.Locations = {
         coords = vector4(-313.84, -1522.82, 27.56, 258.62),
     },
     ["paycheck"] = {
-        label = "Paycheck",
+        label = "Payslip Collection",
         coords = vector3(-321.45, -1545.86, 31.02),
     },
     ["trashcan"] ={
@@ -51,8 +55,8 @@ Config.Locations = {
             coords = vector4(297.94, -2018.26, 20.49, 119.5),
         },
         [4] = {
-            name = "roylowensteinblvd",
-            coords = vector4(509.99, -1620.98, 29.09, 0.5),
+            name = "davisave",
+            coords = vector4(424.98, -1523.57, 29.28, 120.08),
         },
         [5] = {
             name = "littlebighornavenue",
@@ -123,6 +127,18 @@ Config.Locations = {
             coords = vector4(-587.74, -1739.13, 22.47, 339.5),
         },
     },
+    ["routes"] = { -- Custom routes (WIP Do not use)
+        [1] = {7, 6, 5, 15, 10},
+        [2] = {11, 18, 7, 8, 15},
+        [3] = {1, 7, 8, 17, 18},
+        [4] = {16, 17, 4, 8, 21},
+        [5] = {8, 2, 6, 17, 19},
+        [6] = {3, 19, 1, 8, 11},
+        [7] = {8, 19, 9, 6, 14},
+        [8] = {14, 12, 20, 9, 11},
+        [9] = {9, 18, 3, 6, 20},
+        [10] = {9, 13, 7, 17, 16}
+    }
 }
 
 Config.Vehicles = {
