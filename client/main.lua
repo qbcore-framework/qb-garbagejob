@@ -1,22 +1,13 @@
-isLoggedIn = false
-PlayerJob = {}
-
-local GarbageVehicle = nil
-local hasGarbageTruck = false
-local hasGarbageBag = false
-local GarbageLocation = 0
-local DeliveryBlip = nil
-local IsWorking = false
-local AmountOfBags = 0
-local GarbageObject = nil
-local EndBlip = nil
-local GarbageBlip = nil
-local Earnings = 0
+local PlayerJob = {}
+local GarbageVehicle, DeliveryBlip, GarbageObject, EndBlip, GarbageBlip = nil, nil, nil, nil, nil
+local IsWorking, hasGarbageTruck, hasGarbageBag = false, false, false
+local AmountOfBags, GarbageLocation, Earnings = 0, 0, 0
 local CanTakeBag = true
+
+
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
     PlayerJob = QBCore.Functions.GetPlayerData().job
     GarbageVehicle = nil
     hasGarbageTruck = false
@@ -74,22 +65,7 @@ AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
 end)
 
-function DrawText3D(x, y, z, text)
-    SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(true)
-    AddTextComponentString(text)
-    SetDrawOrigin(x,y,z, 0)
-    DrawText(0.0, 0.0)
-    local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
-    ClearDrawOrigin()
-end
-
-function DrawText3D2(coords, text)
+function DrawText3D(coords, text)
     SetTextScale(0.35, 0.35)
     SetTextFont(4)
     SetTextProportional(1)
@@ -106,16 +82,12 @@ end
 
 function LoadModel(hash)
     RequestModel(hash)
-    while not HasModelLoaded(hash) do
-        Citizen.Wait(10)
-    end
+    while not HasModelLoaded(hash) do Wait(10) end
 end
 
 function LoadAnimation(dict)
     RequestAnimDict(dict)
-	while not HasAnimDictLoaded(dict) do
-		Citizen.Wait(10)
-	end
+	while not HasAnimDictLoaded(dict) do Wait(10) end
 end
 
 function BringBackCar()
@@ -172,57 +144,60 @@ Citizen.CreateThread(function()
         local ped = PlayerPedId()
         local pos = GetEntityCoords(ped)
         local spawnplek = Config.Locations["vehicle"].label
-        local InVehicle = IsPedInAnyVehicle(PlayerPedId(), false)
+        local InVehicle = IsPedInAnyVehicle(ped, false)
         local distance = #(pos - vector3(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z))
 
-        if isLoggedIn then
-            if PlayerJob.name == "garbage" then
-                if distance < 10.0 then
-                    DrawMarker(2, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
-                    if distance < 1.5 then
-                        if InVehicle then
-                            DrawText3D(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, "~g~E~w~ - Store Garbage Truck")
-                            if IsControlJustReleased(0, 38) then
-                                QBCore.Functions.TriggerCallback('qb-garbagejob:server:CheckBail', function(DidBail)
-                                    if DidBail then
-                                        BringBackCar()
-                                        QBCore.Functions.Notify("You have $250,- deposit returned!")
-                                    else
-                                        QBCore.Functions.Notify("You have no deposit paid on this vehicle..")
-                                    end
-                                end)
-                            end
-                        else
-                            DrawText3D(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, "~g~E~w~ - Garbage Truck")
-                            if IsControlJustReleased(0, 38) then
-                                QBCore.Functions.TriggerCallback('qb-garbagejob:server:HasMoney', function(HasMoney)
-                                    if HasMoney then
-                                        local coords = Config.Locations["vehicle"].coords
-                                        QBCore.Functions.SpawnVehicle("trash2", function(veh)
-                                            GarbageVehicle = veh
-                                            SetVehicleNumberPlateText(veh, "GARB"..tostring(math.random(1000, 9999)))
-                                            SetEntityHeading(veh, coords.w)
-                                            exports['LegacyFuel']:SetFuel(veh, 100.0)
-                                            TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
-                                            SetEntityAsMissionEntity(veh, true, true)
-                                            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-                                            SetVehicleEngineOn(veh, true, true)
-                                            hasGarbageTruck = true
-                                            GarbageLocation = 1
-                                            IsWorking = true
-                                            SetGarbageRoute()
-                                            QBCore.Functions.Notify("You have $250,- deposit paid!")
-                                            QBCore.Functions.Notify("You have started working, location marked on GPS!")
-                                        end, coords, true)
-                                    else
-                                        QBCore.Functions.Notify("You have not enough money for the deposit.. Deposit costs are $1000,-")
-                                    end
-                                end)
-                            end
+        if PlayerJob.name == "garbage" then
+            if distance < 10.0 then
+                DrawMarker(2, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
+                if distance < 1.5 then
+                    if InVehicle then
+                        DrawText3D(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, "~g~E~w~ - Store Garbage Truck")
+                        if IsControlJustReleased(0, 38) then
+                            QBCore.Functions.TriggerCallback('qb-garbagejob:server:CheckBail', function(DidBail)
+                                if DidBail then
+                                    BringBackCar()
+                                    QBCore.Functions.Notify("A deposit of $250 has been made")
+                                else
+                                    QBCore.Functions.Notify("You have no deposit paid on this vehicle..")
+                                end
+                            end)
+                        end
+                    else
+                        DrawText3D(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, "~g~E~w~ - Garbage Truck")
+                        if IsControlJustReleased(0, 38) then
+                            QBCore.Functions.TriggerCallback('qb-garbagejob:server:HasMoney', function(HasMoney)
+                                if HasMoney then
+                                    local coords = Config.Locations["vehicle"].coords
+                                    QBCore.Functions.SpawnVehicle("trash2", function(veh)
+                                        GarbageVehicle = veh
+                                        SetVehicleNumberPlateText(veh, "GARB"..tostring(math.random(1000, 9999)))
+                                        SetEntityHeading(veh, coords.w)
+                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                        TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
+                                        SetEntityAsMissionEntity(veh, true, true)
+                                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                        SetVehicleEngineOn(veh, true, true)
+                                        hasGarbageTruck = true
+                                        GarbageLocation = 1
+                                        IsWorking = true
+                                        SetGarbageRoute()
+                                        QBCore.Functions.Notify("A deposit of $250 has been made")
+                                        QBCore.Functions.Notify("You have started working, location marked on GPS!")
+                                    end, coords, true)
+                                else
+                                    QBCore.Functions.Notify("~r~Insufficient fund, the deposit fee is $ 1000")
+                                end
+                            end)
                         end
                     end
+                else
+                    Citizen.Wait(1000)
                 end
+                Citizen.Wait(1000)
             end
+        else
+            Citizen.Wait(5000)
         end
 
         Citizen.Wait(1)
@@ -236,97 +211,89 @@ Citizen.CreateThread(function()
         local pos = GetEntityCoords(ped)
         local inRange = false
 
-        if isLoggedIn then
-            if PlayerJob.name == "garbage" then
-                if IsWorking then
-                    if GarbageLocation ~= 0 then
-                        if DeliveryBlip ~= nil then
-                            local DeliveryData = Config.Locations["trashcan"][GarbageLocation]
-                            local Distance = #(pos - vector3(DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z))
+        if PlayerJob.name == "garbage" then
+            if IsWorking then
+                if GarbageLocation ~= 0 then
+                    if DeliveryBlip ~= nil then
+                        local DeliveryData = Config.Locations["trashcan"][GarbageLocation]
+                        local Distance = #(pos - vector3(DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z))
 
-                            if Distance < 20 or hasGarbageBag then
-                                LoadAnimation('missfbi4prepp1')
-                                DrawMarker(2, DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 255, 55, 22, 255, false, false, false, false, false, false, false)
-                                if not hasGarbageBag then
-                                    if CanTakeBag then
-                                        if Distance < 1.5 then
-                                            DrawText3D2(DeliveryData.coords, "~g~E~w~ - Grab a garbage bag")
-                                            if IsControlJustPressed(0, 51) then
-                                                if AmountOfBags == 0 then
-                                                    -- Randomizes how many bags to deliver
-                                                    AmountOfBags = math.random(3, 5)
-                                                end
-                                                hasGarbageBag = true
-                                                TakeAnim()
+                        if Distance < 20 or hasGarbageBag then
+                            LoadAnimation('missfbi4prepp1')
+                            DrawMarker(2, DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 255, 55, 22, 255, false, false, false, false, false, false, false)
+                            if not hasGarbageBag then
+                                if CanTakeBag then
+                                    if Distance < 1.5 then
+                                        DrawText3D(DeliveryData.coords, "~g~E~w~ - Grab a garbage bag")
+                                        if IsControlJustPressed(0, 51) then
+                                            if AmountOfBags == 0 then
+                                                AmountOfBags = math.random(3, 5)
                                             end
-                                        elseif Distance < 10 then
-                                            DrawText3D2(DeliveryData.coords, "Stand here to grab a garbage bag.")
+                                            hasGarbageBag = true
+                                            TakeAnim()
                                         end
+                                    elseif Distance < 10 then
+                                        DrawText3D(DeliveryData.coords, "Stand here to grab a garbage bag.")
+                                    end
+                                end
+                            else
+                                if DoesEntityExist(GarbageVehicle) then
+                                    if Distance < 10 then
+                                        DrawText3D(DeliveryData.coords, "Put the bag in your truck..")
+                                    end
+
+                                    local Coords = GetOffsetFromEntityInWorldCoords(GarbageVehicle, 0.0, -4.5, 0.0)
+                                    local TruckDist = #(pos - Coords)
+
+                                    if TruckDist < 2 then
+                                        DrawText3D(Coords.x, Coords.y, Coords.z, "~g~E~w~ - Dispose of Garbage Bag")
+                                        if IsControlJustPressed(0, 51) then
+                                            hasGarbageBag = false
+                                            local AmountOfLocations = #Config.Locations["trashcan"]
+                                            if (AmountOfBags - 1) == 0 then
+                                                Earnings = Earnings + math.random(60, 90)
+                                                if (GarbageLocation + 1) <= AmountOfLocations then
+                                                    GarbageLocation = GarbageLocation + 1
+                                                    local chance = math.random(1,100)
+                                                    if chance < 26 then
+                                                        TriggerServerEvent('qb-garbagejob:server:nano')
+                                                    end
+                                                    SetGarbageRoute()
+                                                    QBCore.Functions.Notify("All garbage bags are done, proceed to the next location!")
+                                                else
+                                                    QBCore.Functions.Notify("You are done working! Go back to the depot.")
+                                                    IsWorking = false
+                                                    RemoveBlip(DeliveryBlip)
+                                                    SetRouteBack()
+                                                end
+                                                AmountOfBags = 0
+                                                hasGarbageBag = false
+                                            else
+                                                AmountOfBags = AmountOfBags - 1
+                                                if AmountOfBags > 1 then
+                                                    QBCore.Functions.Notify("There are still "..AmountOfBags.." bags left!")
+                                                else
+                                                    QBCore.Functions.Notify("There is still "..AmountOfBags.." bags over there!")
+                                                end
+                                                hasGarbageBag = false
+                                            end
+                                            DeliverAnim()
+                                        end
+                                    elseif TruckDist < 10 then
+                                        DrawText3D(Coords.x, Coords.y, Coords.z, "Stand here..")
                                     end
                                 else
-                                    if DoesEntityExist(GarbageVehicle) then
-                                        if Distance < 10 then
-                                            DrawText3D2(DeliveryData.coords, "Put the bag in your truck..")
-                                        end
-
-                                        local Coords = GetOffsetFromEntityInWorldCoords(GarbageVehicle, 0.0, -4.5, 0.0)
-                                        local TruckDist = #(pos - Coords)
-
-                                        if TruckDist < 2 then
-                                            DrawText3D(Coords.x, Coords.y, Coords.z, "~g~E~w~ - Dispose of Garbage Bag")
-                                            if IsControlJustPressed(0, 51) then
-                                                hasGarbageBag = false
-                                                local AmountOfLocations = #Config.Locations["trashcan"]
-                                                -- Checks if you've delivered all the bags
-                                                if (AmountOfBags - 1) == 0 then
-                                                    -- Delivered all the bags
-                                                    Earnings = Earnings + math.random(60, 90)
-                                                    if (GarbageLocation + 1) <= AmountOfLocations then
-                                                        -- Here he puts your next location and you are not finished working yet.
-                                                        GarbageLocation = GarbageLocation + 1
-                                                        local chance = math.random(1,100)
-                                                        if chance < 26 then
-                                                            TriggerServerEvent('qb-garbagejob:server:nano')
-                                                        end
-                                                        SetGarbageRoute()
-                                                        QBCore.Functions.Notify("All garbage bags are done, proceed to the next location!")
-                                                    else
-                                                        -- Finished work
-                                                        QBCore.Functions.Notify("You are done working! Go back to the depot.")
-                                                        IsWorking = false
-                                                        RemoveBlip(DeliveryBlip)
-                                                        SetRouteBack()
-                                                    end
-                                                    AmountOfBags = 0
-                                                    hasGarbageBag = false
-                                                else
-                                                    -- Didn't deliver all the bags yet
-                                                    AmountOfBags = AmountOfBags - 1
-                                                    if AmountOfBags > 1 then
-                                                        QBCore.Functions.Notify("There are still "..AmountOfBags.." bags left!")
-                                                    else
-                                                        QBCore.Functions.Notify("There is still "..AmountOfBags.." bags over there!")
-                                                    end
-                                                    hasGarbageBag = false
-                                                end
-                                                DeliverAnim()
-                                            end
-                                        elseif TruckDist < 10 then
-                                            DrawText3D(Coords.x, Coords.y, Coords.z, "Stand here..")
-                                        end
-                                    else
-                                        DrawText3D2(DeliveryData.coords, "You have no truck..")
-                                    end
+                                    DrawText3D(DeliveryData.coords, "You have no truck..")
                                 end
                             end
                         end
                     end
                 end
+            else
+                Citizen.Wait(5000)
             end
-        end
-
-        if not IsWorking then
-            Citizen.Wait(1000)
+        else
+            Citizen.Wait(5000)
         end
 
         Citizen.Wait(1)
