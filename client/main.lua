@@ -1,6 +1,5 @@
-isLoggedIn = false
-PlayerJob = {}
-
+local isLoggedIn = false
+local PlayerJob = {}
 local GarbageVehicle = nil
 local hasGarbageTruck = false
 local hasGarbageBag = false
