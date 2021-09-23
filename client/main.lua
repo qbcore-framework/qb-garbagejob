@@ -185,7 +185,7 @@ Citizen.CreateThread(function()
                                 QBCore.Functions.TriggerCallback('qb-garbagejob:server:CheckBail', function(DidBail)
                                     if DidBail then
                                         BringBackCar()
-                                        QBCore.Functions.Notify("You have $250,- deposit returned!")
+                                        QBCore.Functions.Notify("$250 dollar deposit was returned!")
                                     else
                                         QBCore.Functions.Notify("You have no deposit paid on this vehicle..")
                                     end
@@ -210,11 +210,11 @@ Citizen.CreateThread(function()
                                             GarbageLocation = 1
                                             IsWorking = true
                                             SetGarbageRoute()
-                                            QBCore.Functions.Notify("You have $250,- deposit paid!")
-                                            QBCore.Functions.Notify("You have started working, location marked on GPS!")
+                                            QBCore.Functions.Notify("$250 dollar deposit was taken out of your bank account!")
+                                            QBCore.Functions.Notify("You have started work, first location marked on GPS!")
                                         end, coords, true)
                                     else
-                                        QBCore.Functions.Notify("You have not enough money for the deposit.. Deposit costs are $1000,-")
+                                        QBCore.Functions.Notify("You dont have enough money to pay the deposit.. Deposit cost is $250 dollars")
                                     end
                                 end)
                             end
