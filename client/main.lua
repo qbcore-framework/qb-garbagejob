@@ -1,6 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local isLoggedIn = LocalPlayer.state['isLoggedIn']
 local playerJob = nil
+
 local garbageVehicle = nil
 local hasBag = false
 local currentStop = 0
@@ -12,6 +13,7 @@ local endBlip = nil
 local garbageBlip = nil
 local canTakeBag = true
 local currentStopNum = 0
+
 local payCoords = vector3(Config.Locations["paycheck"].coords.x, Config.Locations["paycheck"].coords.y, Config.Locations["paycheck"].coords.z)
 local vehCoords = vector3(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
 
@@ -74,16 +76,12 @@ end
 
 function LoadModel(hash)
     RequestModel(hash)
-    while not HasModelLoaded(hash) do
-        Citizen.Wait(10)
-    end
+    while not HasModelLoaded(hash) do Citizen.Wait(10) end
 end
 
 function LoadAnimation(dict)
     RequestAnimDict(dict)
-	while not HasAnimDictLoaded(dict) do
-		Citizen.Wait(10)
-	end
+	while not HasAnimDictLoaded(dict) do Citizen.Wait(10) end
 end
 
 function BringBackCar()
@@ -114,7 +112,7 @@ Citizen.CreateThread(function()
             sleep = 1
             local ped = PlayerPedId()
             local pos = GetEntityCoords(ped)
-            local InVehicle = IsPedInAnyVehicle(PlayerPedId(), false)
+            local InVehicle = IsPedInAnyVehicle(ped, false)
             local distance = #(pos - vehCoords)
             local payDistance = #(pos - payCoords)
 
@@ -143,7 +141,7 @@ Citizen.CreateThread(function()
 
                                     local coords = Config.Locations["vehicle"].coords
                                     QBCore.Functions.SpawnVehicle("trash2", function(veh)
-                                        TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) -- hopefully this fixes an issue if something is delayed they'll get crushed
+                                        TaskWarpPedIntoVehicle(ped, veh, -1) -- hopefully this fixes an issue if something is delayed they'll get crushed
                                         SetVehicleEngineOn(veh, true, true)
 
                                         garbageVehicle = veh
