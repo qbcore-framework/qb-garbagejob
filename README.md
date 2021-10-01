@@ -1,8 +1,5 @@
 # qb-garbagejob
-Garbage Job For QB-Core Rework by Idris
-
-Idris' Notes: I've kept the old UI but moved most of the logic to the server rather than client side.
-
+Garbage Job V2 For QB-Core
 # Rework
 - Job now pays per bag delivered on a configured scale.
 - Job Randomises the amount of stops and what stops the user goes to
