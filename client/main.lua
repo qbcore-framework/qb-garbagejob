@@ -1,7 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local isLoggedIn = LocalPlayer.state['isLoggedIn']
 local playerJob = nil
-
 local garbageVehicle = nil
 local hasBag = false
 local currentStop = 0
@@ -13,7 +12,6 @@ local endBlip = nil
 local garbageBlip = nil
 local canTakeBag = true
 local currentStopNum = 0
-
 local payCoords = vector3(Config.Locations["paycheck"].coords.x, Config.Locations["paycheck"].coords.y, Config.Locations["paycheck"].coords.z)
 local vehCoords = vector3(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
 
