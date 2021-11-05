@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local isLoggedIn = LocalPlayer.state['isLoggedIn']
 local playerJob = nil
 
 local garbageVehicle = nil
@@ -19,7 +18,6 @@ local vehCoords = vector3(Config.Locations["vehicle"].coords.x, Config.Locations
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = LocalPlayer.state['isLoggedIn']
     playerJob = QBCore.Functions.GetPlayerData().job
 
     setupClient()
@@ -27,7 +25,6 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
-    isLoggedIn = LocalPlayer.state['isLoggedIn']
     playerJob = JobInfo
 
     if playerJob.name == "garbage" then
@@ -108,7 +105,7 @@ end
 Citizen.CreateThread(function()
     while true do
         local sleep = 500
-        if isLoggedIn and playerJob ~= nil and playerJob.name == "garbage" then
+        if LocalPlayer.state.isLoggedIn and playerJob ~= nil and playerJob.name == "garbage" then
             sleep = 1
             local ped = PlayerPedId()
             local pos = GetEntityCoords(ped)
@@ -173,7 +170,7 @@ Citizen.CreateThread(function()
                 if payDistance < 1.5 then
                     DrawText3D(payCoords.x, payCoords.y, payCoords.z, "~g~E~w~ - Payslip")
                     if IsControlJustPressed(0, 38) then
-                        TriggerServerEvent('garbagejob:server:PayShift', location)
+                        TriggerServerEvent('garbagejob:server:PayShift')
                     end
                 elseif payDistance < 5 then
                     DrawText3D(payCoords.x, payCoords.y, payCoords.z, "Payslip")
@@ -211,7 +208,7 @@ end
 
 function RunWorkLoop()
     Citizen.CreateThread(function()
-        while isWorking and isLoggedIn do
+        while isWorking and LocalPlayer.state.isLoggedIn do
 
             local ped = PlayerPedId()
             local pos = GetEntityCoords(ped)
@@ -396,7 +393,6 @@ end)
 
 AddEventHandler('onResourceStart', function(resource)
     if GetCurrentResourceName() == resource then
-        isLoggedIn = LocalPlayer.state['isLoggedIn']
         playerJob = QBCore.Functions.GetPlayerData().job
         setupClient()
     end
