@@ -1,6 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local playerJob = nil
 
+local playerJob = nil
 local garbageVehicle = nil
 local hasBag = false
 local currentStop = 0
@@ -12,32 +12,25 @@ local endBlip = nil
 local garbageBlip = nil
 local canTakeBag = true
 local currentStopNum = 0
-
 local payCoords = vector3(Config.Locations["paycheck"].coords.x, Config.Locations["paycheck"].coords.y, Config.Locations["paycheck"].coords.z)
 local vehCoords = vector3(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     playerJob = QBCore.Functions.GetPlayerData().job
-
     setupClient()
 end)
 
-RegisterNetEvent('QBCore:Client:OnJobUpdate')
-AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     playerJob = JobInfo
-
     if playerJob.name == "garbage" then
         if garbageBlip ~= nil then
             RemoveBlip(garbageBlip)
         end
     end
-
     setupClient()
 end)
 
-RegisterNetEvent('garbagejob:client:SetWaypointHome')
-AddEventHandler('garbagejob:client:SetWaypointHome', function()
+RegisterNetEvent('garbagejob:client:SetWaypointHome', function()
     SetNewWaypoint(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y)
 end)
 
@@ -73,12 +66,12 @@ end
 
 function LoadModel(hash)
     RequestModel(hash)
-    while not HasModelLoaded(hash) do Citizen.Wait(10) end
+    while not HasModelLoaded(hash) do Wait(10) end
 end
 
 function LoadAnimation(dict)
     RequestAnimDict(dict)
-	while not HasAnimDictLoaded(dict) do Citizen.Wait(10) end
+	while not HasAnimDictLoaded(dict) do Wait(10) end
 end
 
 function BringBackCar()
@@ -102,7 +95,7 @@ function BringBackCar()
     currentStopNum = 0
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         local sleep = 500
         if LocalPlayer.state.isLoggedIn and playerJob ~= nil and playerJob.name == "garbage" then
@@ -182,7 +175,7 @@ Citizen.CreateThread(function()
 
         end
 
-        Citizen.Wait(sleep)
+        Wait(sleep)
     end
 end)
 
@@ -206,7 +199,7 @@ function SetGarbageRoute()
 end
 
 function RunWorkLoop()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while isWorking and LocalPlayer.state.isLoggedIn do
 
             local ped = PlayerPedId()
@@ -308,7 +301,7 @@ function RunWorkLoop()
 
             end
 
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 end
@@ -333,20 +326,17 @@ end
 
 function TakeAnim()
     local ped = PlayerPedId()
-
     LoadAnimation('missfbi4prepp1')
     TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
     garbageObject = CreateObject(`prop_cs_rub_binbag_01`, 0, 0, 0, true, true, true)
     AttachEntityToEntity(garbageObject, ped, GetPedBoneIndex(ped, 57005), 0.12, 0.0, -0.05, 220.0, 120.0, 0.0, true, true, false, true, 1, true)
-
     AnimCheck()
 end
 
 function AnimCheck()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
             local ped = PlayerPedId()
-
             if hasBag then
                 if not IsEntityPlayingAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 3) then
                     ClearPedTasksImmediately(ped)
@@ -356,21 +346,18 @@ function AnimCheck()
             else
                 break
             end
-
-            Citizen.Wait(200)
+            Wait(200)
         end
     end)
 end
 
 function DeliverAnim()
     local ped = PlayerPedId()
-
     LoadAnimation('missfbi4prepp1')
     TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_throw_garbage_man', 8.0, 8.0, 1100, 48, 0.0, 0, 0, 0)
     FreezeEntityPosition(ped, true)
     SetEntityHeading(ped, GetEntityHeading(garbageVehicle))
     canTakeBag = false
-
     SetTimeout(1250, function()
         DetachEntity(garbageObject, 1, false)
         DeleteObject(garbageObject)
@@ -407,7 +394,6 @@ function setupClient()
     garbageObject = nil
     endBlip = nil
     currentStopNum = 0
-
     if playerJob.name == "garbage" then
         garbageBlip = AddBlipForCoord(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z)
         SetBlipSprite(garbageBlip, 318)
