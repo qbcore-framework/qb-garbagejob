@@ -154,6 +154,9 @@ Citizen.CreateThread(function()
                                         SetGarbageRoute()
                                         QBCore.Functions.Notify("You have $"..Config.TruckPrice..", deposit paid!")
                                         QBCore.Functions.Notify("You have started working, location marked on GPS!")
+					Wait(10)
+					-- Run the Work Loop to check for Garbo Bags.
+    					RunWorkLoop()
                                     end, coords, true)
 
                                 else
@@ -200,10 +203,6 @@ function SetGarbageRoute()
     AddTextComponentSubstringPlayerName(Config.Locations["trashcan"][currentStop].name)
     EndTextCommandSetBlipName(deliveryBlip)
     SetBlipRoute(deliveryBlip, true)
-
-
-    -- Run the Work Loop to check for Garbo Bags.
-    RunWorkLoop()
 end
 
 function RunWorkLoop()
