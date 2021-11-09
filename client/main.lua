@@ -146,7 +146,7 @@ Citizen.CreateThread(function()
                                         SetEntityHeading(veh, coords.w)
                                         exports['LegacyFuel']:SetFuel(veh, 100.0)
                                         SetEntityAsMissionEntity(veh, true, true)
-                                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                        TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                                         currentStop = firstStop
                                         currentStopNum = 1
                                         amountOfBags = totalBags
