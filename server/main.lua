@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local Bail = {}
 local Routes = {}
 
 QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, cb)

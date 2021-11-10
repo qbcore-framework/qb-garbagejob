@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-
 local playerJob = nil
 local garbageVehicle = nil
 local hasBag = false
@@ -14,6 +13,31 @@ local canTakeBag = true
 local currentStopNum = 0
 local payCoords = vector3(Config.Locations["paycheck"].coords.x, Config.Locations["paycheck"].coords.y, Config.Locations["paycheck"].coords.z)
 local vehCoords = vector3(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
+
+-- Handlers
+
+local function setupClient()
+    garbageVehicle = nil
+    hasBag = false
+    currentStop = 0
+    deliveryBlip = nil
+    isWorking = false
+    amountOfBags = 0
+    garbageObject = nil
+    endBlip = nil
+    currentStopNum = 0
+    if playerJob.name == "garbage" then
+        garbageBlip = AddBlipForCoord(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z)
+        SetBlipSprite(garbageBlip, 318)
+        SetBlipDisplay(garbageBlip, 4)
+        SetBlipScale(garbageBlip, 1.0)
+        SetBlipAsShortRange(garbageBlip, true)
+        SetBlipColour(garbageBlip, 39)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName(Config.Locations["main"].label)
+        EndTextCommandSetBlipName(garbageBlip)
+    end
+end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     playerJob = QBCore.Functions.GetPlayerData().job
@@ -30,11 +54,25 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     setupClient()
 end)
 
-RegisterNetEvent('garbagejob:client:SetWaypointHome', function()
-    SetNewWaypoint(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y)
+AddEventHandler('onResourceStop', function(resource)
+    if GetCurrentResourceName() == resource then
+        if garbageObject ~= nil then
+            DeleteEntity(garbageObject)
+            garbageObject = nil
+        end
+    end
 end)
 
-function DrawText3D(x, y, z, text)
+AddEventHandler('onResourceStart', function(resource)
+    if GetCurrentResourceName() == resource then
+        playerJob = QBCore.Functions.GetPlayerData().job
+        setupClient()
+    end
+end)
+
+-- Functions
+
+local function DrawText3D(x, y, z, text)
     SetTextScale(0.35, 0.35)
     SetTextFont(4)
     SetTextProportional(1)
@@ -49,7 +87,7 @@ function DrawText3D(x, y, z, text)
     ClearDrawOrigin()
 end
 
-function DrawText3D2(coords, text)
+local function DrawText3D2(coords, text)
     SetTextScale(0.35, 0.35)
     SetTextFont(4)
     SetTextProportional(1)
@@ -64,17 +102,12 @@ function DrawText3D2(coords, text)
     ClearDrawOrigin()
 end
 
-function LoadModel(hash)
-    RequestModel(hash)
-    while not HasModelLoaded(hash) do Wait(10) end
-end
-
-function LoadAnimation(dict)
+local function LoadAnimation(dict)
     RequestAnimDict(dict)
 	while not HasAnimDictLoaded(dict) do Wait(10) end
 end
 
-function BringBackCar()
+local function BringBackCar()
     local veh = GetVehiclePedIsIn(PlayerPedId())
     DeleteVehicle(veh)
     if endBlip ~= nil then
@@ -83,7 +116,6 @@ function BringBackCar()
     if deliveryBlip ~= nil then
         RemoveBlip(deliveryBlip)
     end
-
     garbageVehicle = nil
     hasBag = false
     currentStop = 0
@@ -95,91 +127,65 @@ function BringBackCar()
     currentStopNum = 0
 end
 
-CreateThread(function()
-    while true do
-        local sleep = 500
-        if LocalPlayer.state.isLoggedIn and playerJob ~= nil and playerJob.name == "garbage" then
-            sleep = 1
+local function SetRouteBack()
+    local inleverpunt = Config.Locations["vehicle"]
+    endBlip = AddBlipForCoord(inleverpunt.coords.x, inleverpunt.coords.y, inleverpunt.coords.z)
+    SetBlipSprite(endBlip, 1)
+    SetBlipDisplay(endBlip, 2)
+    SetBlipScale(endBlip, 1.0)
+    SetBlipAsShortRange(endBlip, false)
+    SetBlipColour(endBlip, 3)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentSubstringPlayerName(Config.Locations["vehicle"].name)
+    EndTextCommandSetBlipName(endBlip)
+    SetBlipRoute(endBlip, true)
+end
+
+local function AnimCheck()
+    CreateThread(function()
+        while true do
             local ped = PlayerPedId()
-            local pos = GetEntityCoords(ped)
-            local InVehicle = IsPedInAnyVehicle(ped, false)
-            local distance = #(pos - vehCoords)
-            local payDistance = #(pos - payCoords)
-
-            if distance < 10.0 then
-                DrawMarker(2, vehCoords.x, vehCoords.y, vehCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
-                if distance < 1.5 then
-                    if InVehicle then
-                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, "~g~E~w~ - Store Garbage Truck")
-                        if IsControlJustReleased(0, 38) then
-                            QBCore.Functions.TriggerCallback('garbagejob:server:EndShift', function(endShift)
-                                if endShift then
-                                    BringBackCar()
-                                    QBCore.Functions.Notify("Truck returned, collect your payslip to recieve your pay and deposit back!")
-                                else
-                                    QBCore.Functions.Notify("You have no deposit paid on this vehicle..")
-                                    currentStopNum = 0
-                                    currentStop = 0
-                                end
-                            end, pos)
-                        end
-                    else
-                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, "~g~E~w~ - Garbage Truck")
-                        if IsControlJustReleased(0, 38) then
-                            QBCore.Functions.TriggerCallback('garbagejob:server:NewShift', function(shouldContinue, firstStop, totalBags)
-                                if shouldContinue then
-
-                                    local coords = Config.Locations["vehicle"].coords
-                                    QBCore.Functions.SpawnVehicle("trash2", function(veh)
-                                        TaskWarpPedIntoVehicle(ped, veh, -1) -- hopefully this fixes an issue if something is delayed they'll get crushed
-                                        SetVehicleEngineOn(veh, true, true)
-
-                                        garbageVehicle = veh
-                                        SetVehicleNumberPlateText(veh, "GARB"..tostring(math.random(1000, 9999)))
-                                        SetEntityHeading(veh, coords.w)
-                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
-                                        SetEntityAsMissionEntity(veh, true, true)
-                                        TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                                        currentStop = firstStop
-                                        currentStopNum = 1
-                                        amountOfBags = totalBags
-                                        isWorking = true
-                                        SetGarbageRoute()
-                                        QBCore.Functions.Notify("You have $"..Config.TruckPrice..", deposit paid!")
-                                        QBCore.Functions.Notify("You have started working, location marked on GPS!")
-					Wait(10)
-					-- Run the Work Loop to check for Garbo Bags.
-    					RunWorkLoop()
-                                    end, coords, true)
-
-                                else
-                                    QBCore.Functions.Notify("You have not enough money for the deposit.. Deposit costs are $"..Config.TruckPrice)
-                                end
-                            end)
-                        end
-                    end
+            if hasBag then
+                if not IsEntityPlayingAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 3) then
+                    ClearPedTasksImmediately(ped)
+                    LoadAnimation('missfbi4prepp1')
+                    TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
                 end
+            else
+                break
             end
-
-            if payDistance < 20 then
-                DrawMarker(2, payCoords.x, payCoords.y, payCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
-                if payDistance < 1.5 then
-                    DrawText3D(payCoords.x, payCoords.y, payCoords.z, "~g~E~w~ - Payslip")
-                    if IsControlJustPressed(0, 38) then
-                        TriggerServerEvent('garbagejob:server:PayShift')
-                    end
-                elseif payDistance < 5 then
-                    DrawText3D(payCoords.x, payCoords.y, payCoords.z, "Payslip")
-                end
-            end
-
+            Wait(200)
         end
+    end)
+end
 
-        Wait(sleep)
-    end
-end)
+local function TakeAnim()
+    local ped = PlayerPedId()
+    LoadAnimation('missfbi4prepp1')
+    TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
+    garbageObject = CreateObject(`prop_cs_rub_binbag_01`, 0, 0, 0, true, true, true)
+    AttachEntityToEntity(garbageObject, ped, GetPedBoneIndex(ped, 57005), 0.12, 0.0, -0.05, 220.0, 120.0, 0.0, true, true, false, true, 1, true)
+    AnimCheck()
+end
 
-function SetGarbageRoute()
+local function DeliverAnim()
+    local ped = PlayerPedId()
+    LoadAnimation('missfbi4prepp1')
+    TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_throw_garbage_man', 8.0, 8.0, 1100, 48, 0.0, 0, 0, 0)
+    FreezeEntityPosition(ped, true)
+    SetEntityHeading(ped, GetEntityHeading(garbageVehicle))
+    canTakeBag = false
+    SetTimeout(1250, function()
+        DetachEntity(garbageObject, 1, false)
+        DeleteObject(garbageObject)
+        TaskPlayAnim(ped, 'missfbi4prepp1', 'exit', 8.0, 8.0, 1100, 48, 0.0, 0, 0, 0)
+        FreezeEntityPosition(ped, false)
+        garbageObject = nil
+        canTakeBag = true
+    end)
+end
+
+local function SetGarbageRoute()
     local ped = PlayerPedId()
     local pos = GetEntityCoords(ped)
     local CurrentLocation = Config.Locations["trashcan"][currentStop]
@@ -198,7 +204,7 @@ function SetGarbageRoute()
     SetBlipRoute(deliveryBlip, true)
 end
 
-function RunWorkLoop()
+local function RunWorkLoop()
     CreateThread(function()
         while isWorking and LocalPlayer.state.isLoggedIn do
 
@@ -306,103 +312,93 @@ function RunWorkLoop()
     end)
 end
 
+-- Events
 
-function SetRouteBack()
-    local ped = PlayerPedId()
-    local pos = GetEntityCoords(ped)
-    local inleverpunt = Config.Locations["vehicle"]
+RegisterNetEvent('garbagejob:client:SetWaypointHome', function()
+    SetNewWaypoint(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y)
+end)
 
-    endBlip = AddBlipForCoord(inleverpunt.coords.x, inleverpunt.coords.y, inleverpunt.coords.z)
-    SetBlipSprite(endBlip, 1)
-    SetBlipDisplay(endBlip, 2)
-    SetBlipScale(endBlip, 1.0)
-    SetBlipAsShortRange(endBlip, false)
-    SetBlipColour(endBlip, 3)
-    BeginTextCommandSetBlipName("STRING")
-    AddTextComponentSubstringPlayerName(Config.Locations["vehicle"].name)
-    EndTextCommandSetBlipName(endBlip)
-    SetBlipRoute(endBlip, true)
-end
+-- Threads
 
-function TakeAnim()
-    local ped = PlayerPedId()
-    LoadAnimation('missfbi4prepp1')
-    TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
-    garbageObject = CreateObject(`prop_cs_rub_binbag_01`, 0, 0, 0, true, true, true)
-    AttachEntityToEntity(garbageObject, ped, GetPedBoneIndex(ped, 57005), 0.12, 0.0, -0.05, 220.0, 120.0, 0.0, true, true, false, true, 1, true)
-    AnimCheck()
-end
-
-function AnimCheck()
-    CreateThread(function()
-        while true do
+CreateThread(function()
+    while true do
+        local sleep = 500
+        if LocalPlayer.state.isLoggedIn and playerJob ~= nil and playerJob.name == "garbage" then
+            sleep = 1
             local ped = PlayerPedId()
-            if hasBag then
-                if not IsEntityPlayingAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 3) then
-                    ClearPedTasksImmediately(ped)
-                    LoadAnimation('missfbi4prepp1')
-                    TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
+            local pos = GetEntityCoords(ped)
+            local InVehicle = IsPedInAnyVehicle(ped, false)
+            local distance = #(pos - vehCoords)
+            local payDistance = #(pos - payCoords)
+
+            if distance < 10.0 then
+                DrawMarker(2, vehCoords.x, vehCoords.y, vehCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
+                if distance < 1.5 then
+                    if InVehicle then
+                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, "~g~E~w~ - Store Garbage Truck")
+                        if IsControlJustReleased(0, 38) then
+                            QBCore.Functions.TriggerCallback('garbagejob:server:EndShift', function(endShift)
+                                if endShift then
+                                    BringBackCar()
+                                    QBCore.Functions.Notify("Truck returned, collect your payslip to recieve your pay and deposit back!")
+                                else
+                                    QBCore.Functions.Notify("You have no deposit paid on this vehicle..")
+                                    currentStopNum = 0
+                                    currentStop = 0
+                                end
+                            end, pos)
+                        end
+                    else
+                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, "~g~E~w~ - Garbage Truck")
+                        if IsControlJustReleased(0, 38) then
+                            QBCore.Functions.TriggerCallback('garbagejob:server:NewShift', function(shouldContinue, firstStop, totalBags)
+                                if shouldContinue then
+
+                                    local coords = Config.Locations["vehicle"].coords
+                                    QBCore.Functions.SpawnVehicle("trash2", function(veh)
+                                        TaskWarpPedIntoVehicle(ped, veh, -1) -- hopefully this fixes an issue if something is delayed they'll get crushed
+                                        SetVehicleEngineOn(veh, true, true)
+
+                                        garbageVehicle = veh
+                                        SetVehicleNumberPlateText(veh, "GARB"..tostring(math.random(1000, 9999)))
+                                        SetEntityHeading(veh, coords.w)
+                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                        SetEntityAsMissionEntity(veh, true, true)
+                                        TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
+                                        currentStop = firstStop
+                                        currentStopNum = 1
+                                        amountOfBags = totalBags
+                                        isWorking = true
+                                        SetGarbageRoute()
+                                        QBCore.Functions.Notify("You have $"..Config.TruckPrice..", deposit paid!")
+                                        QBCore.Functions.Notify("You have started working, location marked on GPS!")
+                                        Wait(10)
+                                        -- Run the Work Loop to check for Garbo Bags.
+                                        RunWorkLoop()
+                                    end, coords, true)
+                                else
+                                    QBCore.Functions.Notify("You have not enough money for the deposit.. Deposit costs are $"..Config.TruckPrice)
+                                end
+                            end)
+                        end
+                    end
                 end
-            else
-                break
             end
-            Wait(200)
-        end
-    end)
-end
 
-function DeliverAnim()
-    local ped = PlayerPedId()
-    LoadAnimation('missfbi4prepp1')
-    TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_throw_garbage_man', 8.0, 8.0, 1100, 48, 0.0, 0, 0, 0)
-    FreezeEntityPosition(ped, true)
-    SetEntityHeading(ped, GetEntityHeading(garbageVehicle))
-    canTakeBag = false
-    SetTimeout(1250, function()
-        DetachEntity(garbageObject, 1, false)
-        DeleteObject(garbageObject)
-        TaskPlayAnim(ped, 'missfbi4prepp1', 'exit', 8.0, 8.0, 1100, 48, 0.0, 0, 0, 0)
-        FreezeEntityPosition(ped, false)
-        garbageObject = nil
-        canTakeBag = true
-    end)
-end
+            if payDistance < 20 then
+                DrawMarker(2, payCoords.x, payCoords.y, payCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
+                if payDistance < 1.5 then
+                    DrawText3D(payCoords.x, payCoords.y, payCoords.z, "~g~E~w~ - Payslip")
+                    if IsControlJustPressed(0, 38) then
+                        TriggerServerEvent('garbagejob:server:PayShift')
+                    end
+                elseif payDistance < 5 then
+                    DrawText3D(payCoords.x, payCoords.y, payCoords.z, "Payslip")
+                end
+            end
 
-AddEventHandler('onResourceStop', function(resource)
-    if GetCurrentResourceName() == resource then
-        if garbageObject ~= nil then
-            DeleteEntity(garbageObject)
-            garbageObject = nil
         end
+
+        Wait(sleep)
     end
 end)
-
-AddEventHandler('onResourceStart', function(resource)
-    if GetCurrentResourceName() == resource then
-        playerJob = QBCore.Functions.GetPlayerData().job
-        setupClient()
-    end
-end)
-
-function setupClient()
-    garbageVehicle = nil
-    hasBag = false
-    currentStop = 0
-    deliveryBlip = nil
-    isWorking = false
-    amountOfBags = 0
-    garbageObject = nil
-    endBlip = nil
-    currentStopNum = 0
-    if playerJob.name == "garbage" then
-        garbageBlip = AddBlipForCoord(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z)
-        SetBlipSprite(garbageBlip, 318)
-        SetBlipDisplay(garbageBlip, 4)
-        SetBlipScale(garbageBlip, 1.0)
-        SetBlipAsShortRange(garbageBlip, true)
-        SetBlipColour(garbageBlip, 39)
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentSubstringPlayerName(Config.Locations["main"].label)
-        EndTextCommandSetBlipName(garbageBlip)
-    end
-end
