@@ -2,7 +2,6 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local Bail = {}
 local Routes = {}
 
-
 QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, cb)
     local Player = QBCore.Functions.GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
@@ -104,8 +103,7 @@ QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, c
     end
 end)
 
-RegisterServerEvent('garbagejob:server:PayShift')
-AddEventHandler('garbagejob:server:PayShift', function()
+RegisterNetEvent('garbagejob:server:PayShift', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local CitizenId = Player.PlayerData.citizenid
