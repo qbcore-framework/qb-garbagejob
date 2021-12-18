@@ -242,7 +242,7 @@ local function RunWorkLoop()
 
                             if TruckDist < 2 then
                                 DrawText3D(Coords.x, Coords.y, Coords.z, "~g~E~w~ - Dispose of Garbage Bag")
-                                if IsControlJustPressed(0, 51) then
+                                if IsControlJustPressed(0, 51) and hasBag then
                                     QBCore.Functions.Progressbar("deliverbag", "Putting bag in trashmaster ..", 2000, false, true, {
                                         disableMovement = true,
                                         disableCarMovement = true,
