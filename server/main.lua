@@ -36,7 +36,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
         totalNumberOfStops = #allStops
         bagNum = allStops[1].bags
     else
-        TriggerClientEvent('QBCore:Notify', source, 'Not Enough Money ('..Config.TruckPrice..' required)', "error")
+        TriggerClientEvent('QBCore:Notify', source, Lang:t("error.not_enough", {value = Config.TruckPrice}), "error")
     end
     cb(shouldContinue, nextStop, bagNum, totalNumberOfStops)
 end)
@@ -57,7 +57,8 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
     if(math.random(100) >= Config.CryptoStickChance) and Config.GiveCryptoStick then
         Player.Functions.AddItem("cryptostick", 1, false)
         TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items["cryptostick"], 'add')
-        TriggerClientEvent('QBCore:Notify', source, "You found a cryptostick on the floor")
+        TriggerClientEvent('QBCore:Notify', source, Lang:t("info.found_crypto"))
+
     end
 
     if distance <= 10 then
@@ -79,7 +80,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
             Routes[CitizenId].stopsCompleted = tonumber(Routes[CitizenId].stopsCompleted) + 1
         end
     else
-        TriggerClientEvent('QBCore:Notify', source, 'You are too far away from the drop-off point', "error")
+        TriggerClientEvent('QBCore:Notify', source, Lang:t("error.too_far"), "error")
     end
 
     cb(shouldContinue,newStop,newBagAmount)
@@ -97,7 +98,7 @@ QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, c
             cb(false)
         end
     else
-        TriggerClientEvent('QBCore:Notify', source, 'You are too far away from the dropoff point', "error")
+        TriggerClientEvent('QBCore:Notify', source, Lang:t("error.too_far"), "error")
         cb(false)
     end
 end)
@@ -113,20 +114,20 @@ RegisterNetEvent('garbagejob:server:PayShift', function()
             -- local totalComplete = math.floor((Routes[CitizenId].stopsCompleted/Routes[CitizenId].totalNumberOfStops) * 100)
             -- depositPay = math.ceil((totalComplete/Routes[CitizenId].depositPay) * 100)
             depositPay = 0
-            TriggerClientEvent('QBCore:Notify', src, "Due to early finish (Completed: "..Routes[CitizenId].stopsCompleted .." Total: "..Routes[CitizenId].totalNumberOfStops.."), your deposit will not be returned.", "error")
+            TriggerClientEvent('QBCore:Notify', src, Lang:t("error.early_finish", {Completed = Routes[CitizenId].stopsCompleted, total = Routes[CitizenId].totalNumberOfStops}), "error")
         end
 
         local totalToPay = depositPay + Routes[CitizenId].actualPay
-        local payoutDeposit = "(+ $"..depositPay.." deposit)"
+        local payoutDeposit = Lang:t("info.payout_deposit", {value = depositPay})
         if depositPay == 0 then
             payoutDeposit = ""
         end
 
         Player.Functions.AddMoney("bank", totalToPay , 'garbage-payslip')
-        TriggerClientEvent('QBCore:Notify', src, "You got $"..totalToPay..", your payslip "..payoutDeposit.." got paid to your bank account!", "success")
+        TriggerClientEvent('QBCore:Notify', src, Lang:t("success.pay_slip", {total = totalToPay, deposit = payoutDeposit}), "success")
         Routes[CitizenId] = nil
     else
-        TriggerClientEvent('QBCore:Notify', source, 'You never clocked on!', "error")
+        TriggerClientEvent('QBCore:Notify', source, Lang:t("error.never_clocked_on"), "error")
     end
 end)
 
@@ -140,6 +141,6 @@ QBCore.Commands.Add("cleargarbroutes", "Removes garbo routes for user (admin onl
         end
     end
 
-    TriggerClientEvent('QBCore:Notify', source, "Cleared users routes they had "..count.." routes stored", "success")
+    TriggerClientEvent('QBCore:Notify', source, Lang:t("success.clear_routes", {value = count}), "success")
     Routes[CitizenId] = nil
 end, "admin")
