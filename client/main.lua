@@ -222,7 +222,7 @@ local function RunWorkLoop()
 
                     if not hasBag and canTakeBag then
                         if Distance < 1.5 then
-                            DrawText3D2(DeliveryData.coords, "~g~E~w~ - "..Lang:t("info.grab_garbage"))
+                            DrawText3D2(DeliveryData.coords, Lang:t("info.grab_garbage"))
                             if IsControlJustPressed(0, 51) then
 
                                 hasBag = true
@@ -241,7 +241,7 @@ local function RunWorkLoop()
                             end
 
                             if TruckDist < 2 then
-                                DrawText3D(Coords.x, Coords.y, Coords.z, "~g~E~w~ - "..Lang:t("info.dispose_garbage"))
+                                DrawText3D(Coords.x, Coords.y, Coords.z, Lang:t("info.dispose_garbage"))
                                 if IsControlJustPressed(0, 51) and hasBag then
                                     QBCore.Functions.Progressbar("deliverbag", Lang:t("info.progressbar"), 2000, false, true, {
                                         disableMovement = true,
@@ -334,7 +334,7 @@ CreateThread(function()
                 DrawMarker(2, vehCoords.x, vehCoords.y, vehCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
                 if distance < 1.5 then
                     if InVehicle then
-                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, "~g~E~w~ - Store Garbage Truck")
+                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, Lang:t("info.store_truck"))
                         if IsControlJustReleased(0, 38) then
                             QBCore.Functions.TriggerCallback('garbagejob:server:EndShift', function(endShift)
                                 if endShift then
@@ -348,7 +348,7 @@ CreateThread(function()
                             end, pos)
                         end
                     else
-                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, "~g~E~w~ - Garbage Truck")
+                        DrawText3D(vehCoords.x, vehCoords.y, vehCoords.z, Lang:t("info.get_truck"))
                         if IsControlJustReleased(0, 38) then
                             QBCore.Functions.TriggerCallback('garbagejob:server:NewShift', function(shouldContinue, firstStop, totalBags)
                                 if shouldContinue then
@@ -387,7 +387,7 @@ CreateThread(function()
             if payDistance < 20 then
                 DrawMarker(2, payCoords.x, payCoords.y, payCoords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 233, 55, 22, 222, false, false, false, true, false, false, false)
                 if payDistance < 1.5 then
-                    DrawText3D(payCoords.x, payCoords.y, payCoords.z,"~g~E~w~ - "..Lang:t("info.payslip_collect"))
+                    DrawText3D(payCoords.x, payCoords.y, payCoords.z, Lang:t("info.payslip_collect"))
                     if IsControlJustPressed(0, 38) then
                         TriggerServerEvent('garbagejob:server:PayShift')
                     end
