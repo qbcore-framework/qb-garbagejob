@@ -37,4 +37,7 @@ local Translations = {
     },
     warning = {},
 }
-Lang = Locale:new({phrases = Translations})
+Lang = Locale:new({
+    phrases = Translations,
+    warnOnMissing = true
+})
