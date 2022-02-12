@@ -6,6 +6,7 @@ local Translations = {
         ["too_far"] = "You are too far away from the drop-off point",
         ["early_finish"] = "Due to early finish (Completed: %{completed} Total: %{total}), your deposit will not be returned.",
         ["never_clocked_on"] = "You never clocked on!",
+        ["delete_vehicle"] = "You can only park garbage trucks!",
     },
     success = {
         ["clear_routes"] = "Cleared users routes they had %{value} routes stored",
