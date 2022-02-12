@@ -6,6 +6,7 @@ local Translations = {
         ["too_far"] = "Du bist zu weit von der Abgabestelle entfernt",
         ["early_finish"] = "Wegen des frühen Endes (Abgeschlossen: %{completed} Maximal: %{total}), Wird ihre Kaution nicht zurückerstattet.",
         ["never_clocked_on"] = "Du hast nicht gearbeitet!",
+        ["delete_vehicle"] = "Sie können nur Müllwagen parken!",
     },
     success = {
         ["clear_routes"] = "Gelöschte Benutzerrouten, die sie hatten %{value} gespeicherte Routen",
