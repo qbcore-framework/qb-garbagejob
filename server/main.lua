@@ -117,7 +117,7 @@ RegisterNetEvent('garbagejob:server:PayShift', function()
             TriggerClientEvent('QBCore:Notify', src, Lang:t("error.early_finish", {completed = Routes[CitizenId].stopsCompleted, total = Routes[CitizenId].totalNumberOfStops}), "error")
         end
 
-        local totalToPay = depositPay + Routes[CitizenId].actualPay
+        local totalToPay = depositPay + Routes[CitizenId].actualPay + Config.TruckPrice
         local payoutDeposit = Lang:t("info.payout_deposit", {value = depositPay})
         if depositPay == 0 then
             payoutDeposit = ""
