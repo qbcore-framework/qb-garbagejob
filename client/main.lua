@@ -109,22 +109,30 @@ end
 
 local function BringBackCar()
     local veh = GetVehiclePedIsIn(PlayerPedId())
-    DeleteVehicle(veh)
-    if endBlip ~= nil then
-        RemoveBlip(endBlip)
+    local model = GetEntityModel(veh)
+    local displaytext = GetDisplayNameFromVehicleModel(model)
+    
+    if ((displaytext == "TRASH") or (displaytext == "TRASH2")) then
+        DeleteVehicle(veh)
+
+        if endBlip ~= nil then
+            RemoveBlip(endBlip)
+        end
+        if deliveryBlip ~= nil then
+            RemoveBlip(deliveryBlip)
+        end
+        garbageVehicle = nil
+        hasBag = false
+        currentStop = 0
+        deliveryBlip = nil
+        isWorking = false
+        amountOfBags = 0
+        garbageObject = nil
+        endBlip = nil
+        currentStopNum = 0
+    else 
+        QBCore.Functions.Notify(Lang:t("error.truck_returned"))
     end
-    if deliveryBlip ~= nil then
-        RemoveBlip(deliveryBlip)
-    end
-    garbageVehicle = nil
-    hasBag = false
-    currentStop = 0
-    deliveryBlip = nil
-    isWorking = false
-    amountOfBags = 0
-    garbageObject = nil
-    endBlip = nil
-    currentStopNum = 0
 end
 
 local function SetRouteBack()
