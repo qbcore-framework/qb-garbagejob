@@ -1,5 +1,7 @@
 Config = {}
 
+Config.UseTarget = GetConvar('UseTarget', 'false')
+
 -- Price taken and given back when delivered a truck
 Config.TruckPrice = 250
 
@@ -27,6 +29,17 @@ Config.MaxBagsPerStop = 5
 -- WIP: Do not use
 -- If you want to use custom routes instead of random amount of stops stops set to true
 Config.UsePreconfiguredRoutes = false
+
+Config.Peds = {
+    {
+        model = 's_m_y_garbage',
+        coords = vector4(-322.24, -1546.02, 30.02, 294.97),
+        zoneOptions = { -- Used for when UseTarget is false
+            length = 3.0,
+            width = 3.0
+        }
+    }
+}
 
 Config.Locations = {
     ["main"] = {

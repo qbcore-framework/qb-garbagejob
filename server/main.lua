@@ -15,7 +15,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
         local allStops = {}
 
         for i=1, MaxStops do
-            local stop = math.random(1,#Config.Locations["trashcan"])
+            local stop = math.random(#Config.Locations["trashcan"])
             local newBagAmount = math.random(Config.MinBagsPerStop, Config.MaxBagsPerStop)
             allStops[#allStops+1] = {stop = stop, bags = newBagAmount}
         end
@@ -61,7 +61,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
 
     end
 
-    if distance <= 10 then
+    if distance <= 20 then
         if currentStopNum >= #Routes[CitizenId].stops then
             Routes[CitizenId].stopsCompleted = tonumber(Routes[CitizenId].stopsCompleted) + 1
             newStop = currentStop
@@ -82,32 +82,21 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
     else
         TriggerClientEvent('QBCore:Notify', source, Lang:t("error.too_far"), "error")
     end
-
     cb(shouldContinue,newStop,newBagAmount)
 end)
 
 QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, cb, location)
     local Player = QBCore.Functions.GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
-    local distance = #(location - vector3(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z))
-
-    if(distance < 10) then
-        if Routes[CitizenId] ~= nil then
-            cb(true)
-        else
-            cb(false)
-        end
-    else
-        TriggerClientEvent('QBCore:Notify', source, Lang:t("error.too_far"), "error")
-        cb(false)
-    end
+    local status = false
+    if Routes[CitizenId] ~= nil then status = true end
+    cb(status)
 end)
 
 RegisterNetEvent('garbagejob:server:PayShift', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local CitizenId = Player.PlayerData.citizenid
-
     if Routes[CitizenId] ~= nil then
         local depositPay = Routes[CitizenId].depositPay
         if tonumber(Routes[CitizenId].stopsCompleted) < tonumber(Routes[CitizenId].totalNumberOfStops) then
