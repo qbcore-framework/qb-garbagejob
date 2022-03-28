@@ -1,6 +1,6 @@
 Config = {}
 
-Config.UseTarget = GetConvar('UseTarget', 'false')
+Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
 
 -- Price taken and given back when delivered a truck
 Config.TruckPrice = 250
