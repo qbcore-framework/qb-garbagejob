@@ -231,7 +231,7 @@ local function RunWorkLoop()
                                         if amountOfBags > 1 then
                                             QBCore.Functions.Notify(Lang:t("info.bags_left", {value = amountOfBags}))
                                         else
-                                            QBCore.Functions.Notify(Lang:t("info.bags_still", {value = amountOfBags}))
+                                            QBCore.Functions.Notify(Lang:t("info.bags_still"))
                                         end
                                         hasBag = false
                                     end
