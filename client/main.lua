@@ -348,6 +348,7 @@ local function spawnPeds()
                         event = "qb-garbagejob:client:MainMenu",
                         label = 'Talk to Garbageman',
                         icon = 'fa-solid fa-recycle',
+                        job = "garbage",
                     }
                 },
                 distance = 2.0
