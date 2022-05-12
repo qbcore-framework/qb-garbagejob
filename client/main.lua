@@ -148,12 +148,12 @@ end
 
 local function RunWorkLoop()
     CreateThread(function()
+        local GarbText = false
         while listen do
             local ped = PlayerPedId()
             local pos = GetEntityCoords(ped)
             local DeliveryData = Config.Locations["trashcan"][currentStop]
             local Distance = #(pos - vector3(DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z))
-            local GarbText = false
             if Distance < 15 or hasBag then
                 LoadAnimation('missfbi4prepp1')
                 DrawMarker(2, DeliveryData.coords.x, DeliveryData.coords.y, DeliveryData.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 255, 55, 22, 255, false, false, false, false, false, false, false)
@@ -400,7 +400,7 @@ RegisterNetEvent('qb-garbagejob:client:RequestRoute', function()
 
             local coords = Config.Locations["vehicle"].coords
             QBCore.Functions.SpawnVehicle("trash2", function(veh)
-                TaskWarpPedIntoVehicle(ped, veh, -1) -- hopefully this fixes an issue if something is delayed they'll get crushed
+                TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) -- hopefully this fixes an issue if something is delayed they'll get crushed
                 SetVehicleEngineOn(veh, true, true)
 
                 garbageVehicle = veh

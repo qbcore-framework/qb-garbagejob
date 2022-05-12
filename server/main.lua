@@ -14,7 +14,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
         local MaxStops = math.random(Config.MinStops, #Config.Locations["trashcan"])
         local allStops = {}
 
-        for i=1, MaxStops do
+        for _=1, MaxStops do
             local stop = math.random(#Config.Locations["trashcan"])
             local newBagAmount = math.random(Config.MinBagsPerStop, Config.MaxBagsPerStop)
             allStops[#allStops+1] = {stop = stop, bags = newBagAmount}
@@ -72,7 +72,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
             local bagAmount = Routes[CitizenId].stops[currentStopNum].bags
             local totalNewPay = 0
 
-            for i = 1, bagAmount do
+            for _ = 1, bagAmount do
                 totalNewPay = totalNewPay + math.random(Config.BagLowerWorth, Config.BagUpperWorth)
             end
 
@@ -85,7 +85,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
     cb(shouldContinue,newStop,newBagAmount)
 end)
 
-QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, cb, location)
+QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, cb)
     local Player = QBCore.Functions.GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
     local status = false
@@ -124,7 +124,7 @@ QBCore.Commands.Add("cleargarbroutes", "Removes garbo routes for user (admin onl
     local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
     local CitizenId = Player.PlayerData.citizenid
     local count = 0
-    for k,v in pairs(Routes) do
+    for k, _ in pairs(Routes) do
         if k == CitizenId then
             count = count + 1
         end
