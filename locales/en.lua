@@ -4,7 +4,7 @@ local Translations = {
         ["no_truck"] = "You have no truck!",
         ["not_enough"] = "Not Enough Money (%{value} required)",
         ["too_far"] = "You are too far away from the drop-off point",
-        ["early_finish"] = "Due to early finish (Completed: %{completed} Total: %{total}), your deposit will not be returned.",
+        ["early_finish"] = "Due to early finish (Completed: %{Completed} Total: %{total}), your deposit will not be returned.",
         ["never_clocked_on"] = "You never clocked on!",
     },
     success = {
