@@ -192,6 +192,7 @@ local function RunWorkLoop()
                                 exports['qb-core']:DrawText(Lang:t("info.dispose_garbage"), 'left')
                             end
                             if IsControlJustPressed(0, 51) and hasBag then
+                                SetVehicleDoorOpen(garbageVehicle, 5, false, false)
                                 QBCore.Functions.Progressbar("deliverbag", Lang:t("info.progressbar"), 2000, false, true, {
                                         disableMovement = true,
                                         disableCarMovement = true,
@@ -238,11 +239,13 @@ local function RunWorkLoop()
 
                                         DeliverAnim()
                                         Wait(1500)
+                                        SetVehicleDoorShut(garbageVehicle, 5, false)
                                         if TrucText then
                                             exports['qb-core']:HideText()
                                             TrucText = false
                                         end
                                     end, function() -- Cancel
+
                                     QBCore.Functions.Notify(Lang:t("error.cancled"), "error")
                                 end)
 
