@@ -154,6 +154,4 @@ Config.Locations = {
     }
 }
 
-Config.Vehicles = {
-    ["trash2"] = "Garbage Truck",
-}
+Config.Vehicle = 'trash2' -- vehicle name used to spawn
