@@ -76,10 +76,10 @@ end
 
 local function BringBackCar()
     DeleteVehicle(garbageVehicle)
-    if endBlip ~= nil then
+    if endBlip then
         RemoveBlip(endBlip)
     end
-    if deliveryBlip ~= nil then
+    if deliveryBlip then
         RemoveBlip(deliveryBlip)
     end
     garbageVehicle = nil
@@ -288,7 +288,7 @@ end
 
 function SetGarbageRoute()
     local CurrentLocation = Config.Locations["trashcan"][currentStop]
-    if deliveryBlip ~= nil then
+    if deliveryBlip then
         RemoveBlip(deliveryBlip)
     end
     deliveryBlip = AddBlipForCoord(CurrentLocation.coords.x, CurrentLocation.coords.y, CurrentLocation.coords.z)
@@ -465,7 +465,7 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     playerJob = JobInfo
-    if garbageBlip ~= nil then
+    if garbageBlip then
         RemoveBlip(garbageBlip)
     end
     setupClient()
@@ -474,7 +474,7 @@ end)
 
 AddEventHandler('onResourceStop', function(resource)
     if GetCurrentResourceName() == resource then
-        if garbageObject ~= nil then
+        if garbageObject then
             DeleteEntity(garbageObject)
             garbageObject = nil
         end
