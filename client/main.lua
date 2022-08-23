@@ -415,7 +415,7 @@ RegisterNetEvent('qb-garbagejob:client:RequestRoute', function()
                 SetGarbageRoute()
                 QBCore.Functions.Notify(Lang:t("info.deposit_paid", { value = Config.TruckPrice }))
                 QBCore.Functions.Notify(Lang:t("info.started"))
-            end, 'trash2', coords, true)
+            end, Config.Vehicle, coords, true)
         else
             QBCore.Functions.Notify(Lang:t("info.not_enough", { value = Config.TruckPrice }))
         end
