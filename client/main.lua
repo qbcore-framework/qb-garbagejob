@@ -465,10 +465,8 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     playerJob = JobInfo
-    if playerJob.name == "garbage" then
-        if garbageBlip ~= nil then
-            RemoveBlip(garbageBlip)
-        end
+    if garbageBlip ~= nil then
+        RemoveBlip(garbageBlip)
     end
     setupClient()
     spawnPeds()
