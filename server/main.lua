@@ -103,7 +103,7 @@ RegisterNetEvent('garbagejob:server:PayShift', function()
             -- local totalComplete = math.floor((Routes[CitizenId].stopsCompleted/Routes[CitizenId].totalNumberOfStops) * 100)
             -- depositPay = math.ceil((totalComplete/Routes[CitizenId].depositPay) * 100)
             depositPay = 0
-            TriggerClientEvent('QBCore:Notify', src, Lang:t("error.early_finish", {Completed = Routes[CitizenId].stopsCompleted, total = Routes[CitizenId].totalNumberOfStops}), "error")
+            TriggerClientEvent('QBCore:Notify', src, Lang:t("error.early_finish", {completed = Routes[CitizenId].stopsCompleted, total = Routes[CitizenId].totalNumberOfStops}), "error")
         end
 
         local totalToPay = depositPay + Routes[CitizenId].actualPay
