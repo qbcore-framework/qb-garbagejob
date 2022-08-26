@@ -37,38 +37,6 @@ local function setupClient()
     end
 end
 
--- Functions
-
-local function DrawText3D(x, y, z, text)
-    SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(true)
-    AddTextComponentString(text)
-    SetDrawOrigin(x, y, z, 0)
-    DrawText(0.0, 0.0)
-    local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0 + 0.0125, 0.017 + factor, 0.03, 0, 0, 0, 75)
-    ClearDrawOrigin()
-end
-
-local function DrawText3D2(coords, text)
-    SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(true)
-    AddTextComponentString(text)
-    SetDrawOrigin(coords.x, coords.y, coords.z, 0)
-    DrawText(0.0, 0.0)
-    local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0 + 0.0125, 0.017 + factor, 0.03, 0, 0, 0, 75)
-    ClearDrawOrigin()
-end
-
 local function LoadAnimation(dict)
     RequestAnimDict(dict)
     while not HasAnimDictLoaded(dict) do Wait(10) end
@@ -122,11 +90,26 @@ end
 
 local function TakeAnim()
     local ped = PlayerPedId()
-    LoadAnimation('missfbi4prepp1')
-    TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
-    garbageObject = CreateObject(`prop_cs_rub_binbag_01`, 0, 0, 0, true, true, true)
-    AttachEntityToEntity(garbageObject, ped, GetPedBoneIndex(ped, 57005), 0.12, 0.0, -0.05, 220.0, 120.0, 0.0, true, true, false, true, 1, true)
-    AnimCheck()
+	QBCore.Functions.Progressbar("bag_pickup", Lang:t("info.picking_bag"), math.random(3000, 5000), false, true, {
+		disableMovement = true,
+		disableCarMovement = true,
+		disableMouse = false,
+		disableCombat = true,
+	}, {
+		animDict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
+		anim = "machinic_loop_mechandplayer",
+		flags = 16,
+	}, {}, {}, function()
+		LoadAnimation('missfbi4prepp1')
+        TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
+        garbageObject = CreateObject(`prop_cs_rub_binbag_01`, 0, 0, 0, true, true, true)
+        AttachEntityToEntity(garbageObject, ped, GetPedBoneIndex(ped, 57005), 0.12, 0.0, -0.05, 220.0, 120.0, 0.0, true, true, false, true, 1, true)
+        AnimCheck()
+		StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
+	end, function()
+		StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
+		QBCore.Functions.Notify(Lang:t("error.cancled"), "error")
+	end)
 end
 
 local function DeliverAnim()
@@ -174,17 +157,12 @@ local function RunWorkLoop()
                             GarbText = false
                             exports['qb-core']:HideText()
                         end
-                        DrawText3D2(DeliveryData.coords, Lang:t("info.stand_grab_garbage"))
                     end
                 else
                     if DoesEntityExist(garbageVehicle) then
                         local Coords = GetOffsetFromEntityInWorldCoords(garbageVehicle, 0.0, -4.5, 0.0)
                         local TruckDist = #(pos - Coords)
                         local TrucText = false
-
-                        if Distance < 10 then
-                            DrawText3D2(DeliveryData.coords, Lang:t("info.garbage_in_truck"))
-                        end
 
                         if TruckDist < 2 then
                             if not TrucText then
@@ -247,8 +225,6 @@ local function RunWorkLoop()
                                 end)
 
                             end
-                        elseif TruckDist < 10 then
-                            DrawText3D(Coords.x, Coords.y, Coords.z, Lang:t("info.stand_here"))
                         end
                     else
                         QBCore.Functions.Notify(Lang:t("error.no_truck"), "error")
