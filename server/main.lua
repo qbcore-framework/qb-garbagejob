@@ -93,7 +93,6 @@ QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, c
 
             Routes[CitizenId].actualPay = math.ceil(Routes[CitizenId].actualPay + totalNewPay)
             Routes[CitizenId].stopsCompleted = tonumber(Routes[CitizenId].stopsCompleted) + 1
-            print("Actual Pay: "..Routes[CitizenId].actualPay)
         end
     else
         TriggerClientEvent('QBCore:Notify', source, Lang:t("error.too_far"), "error")
