@@ -48,7 +48,10 @@ Config.Locations = {
     },
     ["vehicle"] = {
         label = "Garbage Truck Storage",
-        coords = vector4(-313.84, -1522.82, 27.56, 258.62),
+        coords = { -- parking spot locations to spawn garbage
+                [1] = vector4(-333.84, -1527.28, 27.28, 1.97),
+                [2] = vector4(-327.55, -1527.69, 27.25, 359.43),
+                },
     },
     ["paycheck"] = {
         label = "Payslip Collection",
