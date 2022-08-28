@@ -448,7 +448,7 @@ RegisterNetEvent('qb-garbagejob:client:RequestRoute', function()
             if not garbageVehicle then
                 local occupied = false
                 local coords = Config.Locations["vehicle"].coords
-                for k,v in pairs(Config.Locations["vehicle"].coords) do
+                for _,v in pairs(Config.Locations["vehicle"].coords) do
                     if not IsAnyVehicleNearPoint(vector3(v.x,v.y,v.z), 2.5) then
                         QBCore.Functions.TriggerCallback('QBCore:Server:SpawnVehicle', function(netId)
                             local veh = NetToVeh(netId)
