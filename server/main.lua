@@ -20,7 +20,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
 
     if CanPay(Player) or continue then
         math.randomseed(os.time())
-        local MaxStops = math.random(Config.MinStops, #Config.Locations["trashcan"]) 
+        local MaxStops = math.random(Config.MinStops, #Config.Locations["trashcan"])
         local allStops = {}
 
         for _=1, MaxStops do
@@ -112,9 +112,8 @@ RegisterNetEvent('garbagejob:server:PayShift', function(continue)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local CitizenId = Player.PlayerData.citizenid
-    local depositPay = 0
     if Routes[CitizenId] ~= nil then
-        depositPay = Routes[CitizenId].depositPay
+        local depositPay = Routes[CitizenId].depositPay
         if tonumber(Routes[CitizenId].stopsCompleted) < tonumber(Routes[CitizenId].totalNumberOfStops) then
             depositPay = 0
             TriggerClientEvent('QBCore:Notify', src, Lang:t("error.early_finish", {completed = Routes[CitizenId].stopsCompleted, total = Routes[CitizenId].totalNumberOfStops}), "error")
