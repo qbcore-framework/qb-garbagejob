@@ -161,7 +161,7 @@ local function DeliverAnim()
 end
 
 function TakeAnim()
-    local ped = PlayerPedId()
+	local ped = PlayerPedId()
 	QBCore.Functions.Progressbar("bag_pickup", Lang:t("info.picking_bag"), math.random(3000, 5000), false, true, {
 		disableMovement = true,
 		disableCarMovement = true,
@@ -172,20 +172,20 @@ function TakeAnim()
 		anim = "machinic_loop_mechandplayer",
 		flags = 16,
 	}, {}, {}, function()
-		LoadAnimation('missfbi4prepp1')
+        LoadAnimation('missfbi4prepp1')
         TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
         garbageObject = CreateObject(`prop_cs_rub_binbag_01`, 0, 0, 0, true, true, true)
         AttachEntityToEntity(garbageObject, ped, GetPedBoneIndex(ped, 57005), 0.12, 0.0, -0.05, 220.0, 120.0, 0.0, true, true, false, true, 1, true)
-		StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
+        StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         AnimCheck()
         if Config.UseTarget and not hasBag then
             hasBag = true
             exports['qb-target']:RemoveZone("garbagebin")
             exports['qb-target']:AddTargetEntity(garbageVehicle, {
-                options = {
-                    {label = Lang:t("target.dispose_garbage"),icon = 'fa-solid fa-truck',action = function() DeliverAnim() end,canInteract = function() if hasBag then return true end return false end, }
-                },
-                distance = 2.0
+            options = {
+                {label = Lang:t("target.dispose_garbage"),icon = 'fa-solid fa-truck',action = function() DeliverAnim() end,canInteract = function() if hasBag then return true end return false end, }
+            },
+            distance = 2.0
             })
         end
 	end, function()
