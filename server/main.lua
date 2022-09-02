@@ -2,12 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local Routes = {}
 
 local function CanPay(Player)
-    local bank = Player.PlayerData.money['bank']
-    if bank >= Config.TruckPrice then
-        return true
-    else
-        return false
-    end
+    return Player.PlayerData.money['bank'] >= Config.TruckPrice
 end
 
 QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, cb, continue)
