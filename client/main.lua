@@ -481,8 +481,6 @@ RegisterNetEvent('qb-garbagejob:client:RequestRoute', function()
             currentStop = firstStop
             currentStopNum = 1
             amountOfBags = totalBags
-            print(currentStop)
-            print(amountOfBags)
             SetGarbageRoute()
         else
             QBCore.Functions.Notify(Lang:t("info.not_enough", { value = Config.TruckPrice }))
