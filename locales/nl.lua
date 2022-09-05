@@ -6,10 +6,23 @@ local Translations = {
         ["too_far"] = "Je bent te ver weg van het inleverpunt",
         ["early_finish"] = "Wegens vroege voltooiing (Voltooid: %{completed} Totaal: %{total}), wordt uw aanbetaling niet geretourneerd.",
         ["never_clocked_on"] = "Je hebt nooit ingeklokt!",
+        ["all_occupied"] = "Alle parkeerplekken zijn bezet",
     },
     success = {
         ["clear_routes"] = "Routes van gebruikers gewist, ze hadden %{value} routes opgeslagen",
         ["pay_slip"] = "Je hebt $%{total} gekregen, je loonstrookje %{deposit} is op je bankrekening gestort!",
+    },
+    target = {
+        ["talk"] = 'Praat met Vuilnisman',
+        ["grab_garbage"] = "Vuilniszak oppakken",
+        ["dispose_garbage"] = "Vuilniszak opbergen",
+    },
+    menu = {
+        ["header"] = "Vuilnisman Hoofdmenu",
+        ["collect"] = "Loon Incasseren",
+        ["return_collect"] = "Vrachtwagen retourneren en look incasseren!",
+        ["route"] = "Roete Toewijzen",
+        ["request_route"] = "Een vuilnis roete toewijzen",
     },
     info = {
         ["payslip_collect"] = "[E] - Loonstrook",
@@ -34,8 +47,9 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} borg)",
         ["store_truck"] =  "[E] - Vuilniswagen retourneren",
         ["get_truck"] =  "[E] - Vuilniswagen",
+        ["picking_bag"] = "Vuilniszak oppakken..",
+        ["talk"] = "[E] Praat ment Vuilnisman",
     },
-    warning = {},
 }
 Lang = Locale:new({
     phrases = Translations,

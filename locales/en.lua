@@ -6,10 +6,23 @@ local Translations = {
         ["too_far"] = "You are too far away from the drop-off point",
         ["early_finish"] = "Due to early finish (Completed: %{completed} Total: %{total}), your deposit will not be returned.",
         ["never_clocked_on"] = "You never clocked on!",
+        ["all_occupied"] = "All parking spots are occupied",
     },
     success = {
         ["clear_routes"] = "Cleared users routes they had %{value} routes stored",
         ["pay_slip"] = "You got $%{total}, your payslip %{deposit} got paid to your bank account!",
+    },
+    target = {
+        ["talk"] = 'Talk to Garbageman',
+        ["grab_garbage"] = "Grab garbage bag",
+        ["dispose_garbage"] = "Dispose Garbage Bag",
+    },
+    menu = {
+        ["header"] = "Garbage Main Menu",
+        ["collect"] = "Collect Paycheck",
+        ["return_collect"] = "Return truck and collect paycheck here!",
+        ["route"] = "Request Route",
+        ["request_route"] = "Request a garbage Route",
     },
     info = {
         ["payslip_collect"] = "[E] - Payslip",
@@ -34,8 +47,9 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} deposit)",
         ["store_truck"] =  "[E] - Store Garbage Truck",
         ["get_truck"] =  "[E] - Garbage Truck",
+        ["picking_bag"] = "Grabbing garbage bag..",
+        ["talk"] = "[E] Talk to Garbage Man",
     },
-    warning = {},
 }
 Lang = Locale:new({
     phrases = Translations,

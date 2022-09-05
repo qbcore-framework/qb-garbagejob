@@ -1,7 +1,11 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local Routes = {}
 
-QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, cb)
+local function CanPay(Player)
+    return Player.PlayerData.money['bank'] >= Config.TruckPrice
+end
+
+QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, cb, continue)
     local Player = QBCore.Functions.GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
     local shouldContinue = false
@@ -9,7 +13,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
     local totalNumberOfStops = 0
     local bagNum = 0
 
-    if Player.Functions.RemoveMoney("bank", Config.TruckPrice, "garbo-truck-dep") then
+    if CanPay(Player) or continue then
         math.randomseed(os.time())
         local MaxStops = math.random(Config.MinStops, #Config.Locations["trashcan"])
         local allStops = {}
@@ -41,6 +45,12 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
     cb(shouldContinue, nextStop, bagNum, totalNumberOfStops)
 end)
 
+RegisterNetEvent("qb-garbagejob:server:payDeposit", function()
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player.Functions.RemoveMoney("bank", Config.TruckPrice, "garbage-deposit") then
+        TriggerClientEvent('QBCore:Notify', source, Lang:t("error.not_enough", {value = Config.TruckPrice}), "error")
+    end
+end)
 
 QBCore.Functions.CreateCallback("garbagejob:server:NextStop", function(source, cb, currentStop, currentStopNum, currLocation)
     local Player = QBCore.Functions.GetPlayer(source)
@@ -93,19 +103,19 @@ QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, c
     cb(status)
 end)
 
-RegisterNetEvent('garbagejob:server:PayShift', function()
+RegisterNetEvent('garbagejob:server:PayShift', function(continue)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local CitizenId = Player.PlayerData.citizenid
     if Routes[CitizenId] ~= nil then
         local depositPay = Routes[CitizenId].depositPay
         if tonumber(Routes[CitizenId].stopsCompleted) < tonumber(Routes[CitizenId].totalNumberOfStops) then
-            -- local totalComplete = math.floor((Routes[CitizenId].stopsCompleted/Routes[CitizenId].totalNumberOfStops) * 100)
-            -- depositPay = math.ceil((totalComplete/Routes[CitizenId].depositPay) * 100)
             depositPay = 0
             TriggerClientEvent('QBCore:Notify', src, Lang:t("error.early_finish", {completed = Routes[CitizenId].stopsCompleted, total = Routes[CitizenId].totalNumberOfStops}), "error")
         end
-
+        if continue then
+            depositPay = 0
+        end
         local totalToPay = depositPay + Routes[CitizenId].actualPay
         local payoutDeposit = Lang:t("info.payout_deposit", {value = depositPay})
         if depositPay == 0 then

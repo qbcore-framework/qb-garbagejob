@@ -6,10 +6,23 @@ local Translations = {
         ["too_far"] = "Bırakma noktasından çok uzaktasın",
         ["early_finish"] = "Erken bitirme nedeniyle (Tamamlandı: %{completed} Toplam: %{total}), depozitonuz iade edilmeyecektir.",
         ["never_clocked_on"] = "Hiç mesaiye başlamadın!",
+        ["all_occupied"] = "Tüm park yerleri dolu",
     },
     success = {
         ["clear_routes"] = "Kullanıcıların kayıtlı %{value} rotalası temizlendi",
         ["pay_slip"] = "$%{total} aldınız, maaş bordronuz %{deposit} banka hesabınıza ödendi!",
+    },
+    target = {
+        ["talk"] = 'Çöpçü ile konuş',
+        ["grab_garbage"] = "Çöp torbası al",
+        ["dispose_garbage"] = "Çöp Torbasını At",
+    },
+    menu = {
+        ["header"] = "Çöpcü Ana Menü",
+        ["collect"] = "Maaşını Al",
+        ["return_collect"] = "Kamyonu iade edin ve maaş çekini buradan alın!",
+        ["route"] = "Rota Talep Et",
+        ["request_route"] = "Bir çöp rotası isteyin",
     },
     info = {
         ["payslip_collect"] = "[E] - Maaş bordrosu",
@@ -34,8 +47,9 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} depozito)",
         ["store_truck"] =  "[E] - Çöp Kamyonunu Depola",
         ["get_truck"] =  "[E] - Çöp Kamyonu",
+        ["picking_bag"] = "Çöp Torbası alınıyor..",
+        ["talk"] = "[E] Çöpcü ile konuş",
     },
-    warning = {},
 }
 Lang = Locale:new({
     phrases = Translations,
