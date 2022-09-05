@@ -161,17 +161,17 @@ local function DeliverAnim()
 end
 
 function TakeAnim()
-	local ped = PlayerPedId()
-	QBCore.Functions.Progressbar("bag_pickup", Lang:t("info.picking_bag"), math.random(3000, 5000), false, true, {
-		disableMovement = true,
-		disableCarMovement = true,
-		disableMouse = false,
-		disableCombat = true,
-	}, {
-		animDict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
-		anim = "machinic_loop_mechandplayer",
-		flags = 16,
-	}, {}, {}, function()
+    local ped = PlayerPedId()
+    QBCore.Functions.Progressbar("bag_pickup", Lang:t("info.picking_bag"), math.random(3000, 5000), false, true, {
+        disableMovement = true,
+        disableCarMovement = true,
+        disableMouse = false,
+        disableCombat = true,
+    }, {
+        animDict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
+        anim = "machinic_loop_mechandplayer",
+        flags = 16,
+    }, {}, {}, function()
         LoadAnimation('missfbi4prepp1')
         TaskPlayAnim(ped, 'missfbi4prepp1', '_bag_walk_garbage_man', 6.0, -6.0, -1, 49, 0, 0, 0, 0)
         garbageObject = CreateObject(`prop_cs_rub_binbag_01`, 0, 0, 0, true, true, true)
@@ -188,10 +188,10 @@ function TakeAnim()
             distance = 2.0
             })
         end
-	end, function()
-		StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
-		QBCore.Functions.Notify(Lang:t("error.cancled"), "error")
-	end)
+    end, function()
+        StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
+        QBCore.Functions.Notify(Lang:t("error.cancled"), "error")
+    end)
 end
 
 local function RunWorkLoop()
