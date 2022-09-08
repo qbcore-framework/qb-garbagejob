@@ -6,10 +6,23 @@ local Translations = {
         ["too_far"] = "Estás demasiado lejos del punto de entrega",
         ["early_finish"] = "Porque regresaste antes de terminar (Completado: %{completed} total: %{total}), Tu depósito no será devuelto.",
         ["never_clocked_on"] = "You never clocked on!",
+        ["all_occupied"] = "Todas los lugares de aparcamiento están ocupados",
     },
     success = {
         ["clear_routes"] = "Rutas liberadas. %{value} rutas guardadas",
         ["pay_slip"] = "Tienes $%{total}, Tus %{deposit} estan en tu cuenta del banco!",
+    },
+    target = {
+        ["talk"] = "Habla con Garbageman",
+        ["grab_garbage"] = "Coge la bolsa de basura",
+        ["dispose_garbage"] = "Deshazte de la bolsa de basura",
+    },
+    menu = {
+        ["header"] = "Menú principal de la basura",
+        ["collect"] = "Recoger el cheque de pago",
+        ["return_collect"] = "¡Devuelve el camión y recoge el cheque de pago aquí!",
+        ["route"] = "Solicitar ruta",
+        ["request_route"] = "Solicite una ruta de basura",
     },
     info = {
         ["payslip_collect"] = "[E] - Recibir pago",
@@ -34,6 +47,8 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} deposito)",
         ["store_truck"] =  "[E] - Almacenar camión de basura",
         ["get_truck"] =  "[E] - Camión de la basura",
+        ["picking_bag"] = "Agarrando bolsa de basura..",
+        ["talk"] = "[E] Hablar con el hombre de la basura",
     },
     warning = {},
 }
