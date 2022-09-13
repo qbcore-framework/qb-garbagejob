@@ -51,7 +51,11 @@ local Translations = {
         ["talk"] = "[E] Praat ment Vuilnisman",
     },
 }
-Lang = Locale:new({
-    phrases = Translations,
-    warnOnMissing = true
-})
+
+if GetConvar('qb_locale', 'en') == 'nl' then
+    Lang = Locale:new({
+        phrases = Translations,
+        warnOnMissing = true,
+        fallbackLang = Lang,
+    })
+end

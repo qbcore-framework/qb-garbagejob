@@ -51,7 +51,8 @@ local Translations = {
         ["talk"] = "[E] Talk to Garbage Man",
     },
 }
-Lang = Locale:new({
+
+Lang = Lang or Locale:new({
     phrases = Translations,
     warnOnMissing = true
 })
