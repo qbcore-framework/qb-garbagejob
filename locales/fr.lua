@@ -11,6 +11,11 @@ local Translations = {
         ["clear_routes"] = "Optimisations des itinéraires, il y'avait %{value} itinéraires enregistrés",
         ["pay_slip"] = "Vous avez eu $%{total}, votre salaire de %{deposit} a été transféré à votre compte bancaire!",
     },
+    target = {
+        ["talk"] = 'Parler avec le patron',
+        ["grab_garbage"] = "Prendre le sac",
+        ["dispose_garbage"] = "Déposer le sac",
+    },
     info = {
         ["payslip_collect"] = "[E] - Recevoir sa fiche de paie",
         ["payslip"] = "fiche de paie",
