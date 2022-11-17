@@ -128,7 +128,6 @@ local function DeliverAnim()
                     amountOfBags = newBagAmount
                     SetGarbageRoute()
                     QBCore.Functions.Notify(Lang:t("info.all_bags"))
-                    SetVehicleDoorShut(garbageVehicle, 5, false)
                 else
                     if hasMoreStops and nextStop == currentStop then
                         QBCore.Functions.Notify(Lang:t("info.depot_issue"))
