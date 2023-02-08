@@ -49,7 +49,6 @@ local Translations = {
         ["get_truck"] =  "[E] - Garbage Truck",
         ["picking_bag"] = "Grabbing garbage bag..",
         ["talk"] = "[E] Talk to Garbage Man",
-        ["using_routes"] = "Giving you a pre-confgured route",
         ["garb_route"] = "Your route is %{routes}"
     },
 }

@@ -19,7 +19,6 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
         local allStops = {}
 
         if (Config.UsePreconfiguredRoutes) then
-            TriggerClientEvent('QBCore:Notify', source, Lang:t("info.using_routes"))
             local route = Config.Locations["routes"][math.random(#Config.Locations["routes"])]
             local stops = #route
             local garbRouteString = ""
