@@ -26,7 +26,6 @@ Config.MinBagsPerStop = 2
 -- Maximum bags per stop
 Config.MaxBagsPerStop = 5
 
--- WIP: Do not use
 -- If you want to use custom routes instead of random amount of stops stops set to true
 Config.UsePreconfiguredRoutes = false
 
@@ -59,91 +58,91 @@ Config.Locations = {
     },
     ["trashcan"] ={
         [1] = {
-            name = "forumdrive",
+            name = "Forum Drive",
             coords = vector4(-168.07, -1662.8, 33.31, 137.5),
         },
         [2] = {
-            name = "grovestreet",
+            name = "Grove Street",
             coords = vector4(118.06, -1943.96, 20.43, 179.5),
         },
         [3] = {
-            name = "jamestownstreet",
+            name = "Jamestown Street",
             coords = vector4(297.94, -2018.26, 20.49, 119.5),
         },
         [4] = {
-            name = "davisave",
+            name = "Danisave",
             coords = vector4(424.98, -1523.57, 29.28, 120.08),
         },
         [5] = {
-            name = "littlebighornavenue",
+            name = "Little Big Horn Avenue",
             coords = vector4(488.49, -1284.1, 29.24, 138.5),
         },
         [6] = {
-            name = "vespucciblvd",
+            name = "Bespucci Blvd",
             coords = vector4(307.47, -1033.6, 29.03, 46.5),
         },
         [7] = {
-            name = "elginavenue",
+            name = "Elgin Avenue",
             coords = vector4(239.19, -681.5, 37.15, 178.5),
         },
         [8] = {
-            name = "elginavenue2",
+            name = "Elgin Avenue 2",
             coords = vector4(543.51, -204.41, 54.16, 199.5),
         },
         [9] = {
-            name = "powerstreet",
+            name = "Powers treet",
             coords = vector4(268.72, -25.92, 73.36, 90.5),
         },
         [10] = {
-            name = "altastreet",
+            name = "Alta street",
             coords = vector4(267.03, 276.01, 105.54, 332.5),
         },
         [11] = {
-            name = "didiondrive",
+            name = "Didion Drive",
             coords = vector4(21.65, 375.44, 112.67, 323.5),
         },
         [12] = {
-            name = "miltonroad",
+            name = "Milton Road",
             coords = vector4(-546.9, 286.57, 82.85, 127.5),
         },
         [13] = {
-            name = "eastbourneway",
+            name = "East Bourne Way",
             coords = vector4(-683.23, -169.62, 37.74, 267.5),
         },
         [14] = {
-            name = "eastbourneway2",
+            name = "East Bourne Way 2",
             coords = vector4(-771.02, -218.06, 37.05, 277.5),
         },
         [15] = {
-            name = "industrypassage",
+            name = "Industry Passage",
             coords = vector4(-1057.06, -515.45, 35.83, 61.5),
         },
         [16] = {
-            name = "boulevarddelperro",
+            name = "Noulevard Del Perro",
             coords = vector4(-1558.64, -478.22, 35.18, 179.5),
         },
         [17] = {
-            name = "sandcastleway",
+            name = "Sand Castleway",
             coords = vector4(-1350.0, -895.64, 13.36, 17.5),
         },
         [18] = {
-            name = "magellanavenue",
+            name = "Magellan Avenue",
             coords = vector4(-1243.73, -1359.72, 3.93, 287.5),
         },
         [19] = {
-            name = "palominoavenue",
+            name = "Palomino Avenue",
             coords = vector4(-845.87, -1113.07, 6.91, 253.5),
         },
         [20] = {
-            name = "southrockforddrive",
+            name = "Southrock Ford Drive",
             coords = vector4(-635.21, -1226.45, 11.8, 143.5),
         },
         [21] = {
-            name = "southarsenalstreet",
+            name = "South Arsenal Street",
             coords = vector4(-587.74, -1739.13, 22.47, 339.5),
         },
     },
-    ["routes"] = { -- Custom routes (WIP Do not use)
+    ["routes"] = { -- Routes are used when UsePreconfiguredRoutes is true
         [1] = {7, 6, 5, 15, 10},
         [2] = {11, 18, 7, 8, 15},
         [3] = {1, 7, 8, 17, 18},
