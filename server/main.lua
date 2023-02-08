@@ -27,7 +27,7 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
                 
                 if (stopNumber > 1) then
                     garbRouteString = garbRouteString .. ", " .. Config.Locations["trashcan"][route[stopNumber]].name
-                else 
+                else
                     garbRouteString = garbRouteString .. Config.Locations["trashcan"][route[stopNumber]].name
                 end
 
@@ -35,11 +35,10 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
                 local newBagAmount = math.random(Config.MinBagsPerStop, Config.MaxBagsPerStop)
                 allStops[#allStops+1] = {stop = stop, bags = newBagAmount}
             end
-
     
             TriggerClientEvent('QBCore:Notify', source, Lang:t("info.garb_route", {routes = garbRouteString}), "success")
 
-        else 
+        else
             for _=1, MaxStops do
                 local stop = math.random(#Config.Locations["trashcan"])
                 local newBagAmount = math.random(Config.MinBagsPerStop, Config.MaxBagsPerStop)
@@ -47,7 +46,6 @@ QBCore.Functions.CreateCallback("garbagejob:server:NewShift", function(source, c
             end
         end
         
-
         Routes[CitizenId] = {
             stops = allStops,
             currentStop = 1,
