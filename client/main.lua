@@ -493,6 +493,7 @@ RegisterNetEvent('qb-garbagejob:client:RequestPaycheck', function()
         QBCore.Functions.Notify(Lang:t("info.truck_returned"))
     end
     TriggerServerEvent('garbagejob:server:PayShift')
+    TriggerEvent('wais:addmissionxp:garbagejob', 1) -- Added by Pamela for wais-battlepass
 end)
 
 RegisterNetEvent('qb-garbagejob:client:MainMenu', function()
