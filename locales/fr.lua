@@ -6,6 +6,7 @@ local Translations = {
         ["too_far"] = "Vous êtes trop loin du point de dépôt",
         ["early_finish"] = "En raison de votre performance (Complété: %{completed} sur Total: %{total}), votre caution ne sera pas restituée.",
         ["never_clocked_on"] = "Tu n'as pas assez travaillé pour être payé!",
+        ["job"] = "Vous devez obtenir le poste auprès du Pôle Emploi",
     },
     success = {
         ["clear_routes"] = "Optimisations des itinéraires, il y'avait %{value} itinéraires enregistrés",
@@ -39,6 +40,8 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} deposit)",
         ["store_truck"] =  "[E] - Garer le Camion Benne",
         ["get_truck"] =  "[E] - Sortir un Camion Benne",
+        ["picking_bag"] = "Grabbing garbage bag..",
+        ["talk"] = "[E] Talk to Garbage Man",
     },
     warning = {},
 }

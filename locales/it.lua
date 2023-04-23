@@ -6,10 +6,23 @@ local Translations = {
         ["too_far"] = "Sei troppo lontano dal punto di consegna",
         ["early_finish"] = "A causa della fine anticipata (Completati: %{completed} Totali: %{total}), la cauzione non verrà restituita",
         ["never_clocked_on"] = "Non hai mai timbrato il cartellino!",
+        ["job"] = "Devi ottenere il lavoro dal centro per l'impiego",
     },
     success = {
         ["clear_routes"] = "Percorso cancellato. Avevi %{value} percorsi",
         ["pay_slip"] = "Hai ottenuto $%{total} in busta paga più %{deposit} e sono stati accreditati sul tuo conto bancario!",
+    },
+    target = {
+        ["talk"] = 'Talk to Garbageman',
+        ["grab_garbage"] = "Grab garbage bag",
+        ["dispose_garbage"] = "Dispose Garbage Bag",
+    },
+    menu = {
+        ["header"] = "Garbage Main Menu",
+        ["collect"] = "Collect Paycheck",
+        ["return_collect"] = "Return truck and collect paycheck here!",
+        ["route"] = "Request Route",
+        ["request_route"] = "Request a garbage Route",
     },
     info = {
         ["payslip_collect"] = "[E] - Busta paga",
@@ -34,6 +47,8 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} di cauzione)",
         ["store_truck"] =  "[E] - Deposita camion",
         ["get_truck"] =  "[E] - Camion della spazzatura",
+        ["picking_bag"] = "Grabbing garbage bag..",
+        ["talk"] = "[E] Talk to Garbage Man",
     },
     warning = {},
 }

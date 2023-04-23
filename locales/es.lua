@@ -7,6 +7,7 @@ local Translations = {
         ["early_finish"] = "Porque regresaste antes de terminar (Completado: %{completed} total: %{total}), Tu depósito no será devuelto.",
         ["never_clocked_on"] = "You never clocked on!",
         ["all_occupied"] = "Todas los lugares de aparcamiento están ocupados",
+        ["job"] = "Debe obtener el trabajo del centro de trabajo",
     },
     success = {
         ["clear_routes"] = "Rutas liberadas. %{value} rutas guardadas",

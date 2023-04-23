@@ -6,10 +6,23 @@ local Translations = {
         ["too_far"] = "Estás demasiado afastado do ponto de entrega",
         ["early_finish"] = "Devido a final antecipado (Completado: %{completed} Total: %{total}), o teu depósito não será devolvido.",
         ["never_clocked_on"] = "Não entraste de serviço!",
+        ["job"] = "Você deve conseguir o emprego no centro de empregos",
     },
     success = {
         ["clear_routes"] = "Apagaste as rotas dos utilizadores. Existiam %{value} rotas guardadas",
         ["pay_slip"] = "Fizeste $%{total}, a tua folha de pagamento de %{deposit} foi depositada no teu banco!",
+    },
+    target = {
+        ["talk"] = 'Talk to Garbageman',
+        ["grab_garbage"] = "Grab garbage bag",
+        ["dispose_garbage"] = "Dispose Garbage Bag",
+    },
+    menu = {
+        ["header"] = "Garbage Main Menu",
+        ["collect"] = "Collect Paycheck",
+        ["return_collect"] = "Return truck and collect paycheck here!",
+        ["route"] = "Request Route",
+        ["request_route"] = "Request a garbage Route",
     },
     info = {
         ["payslip_collect"] = "~g~E~w~ - Folha de Pagamento",
@@ -34,6 +47,8 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} depósito)",
         ["store_truck"] =  "~g~E~w~ - Guardar Camião do Lixo",
         ["get_truck"] =  "~g~E~w~ - Camião do Lixo",
+        ["picking_bag"] = "Grabbing garbage bag..",
+        ["talk"] = "[E] Talk to Garbage Man",
     },
     warning = {},
 }

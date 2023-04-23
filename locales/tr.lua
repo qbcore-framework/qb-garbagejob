@@ -7,6 +7,7 @@ local Translations = {
         ["early_finish"] = "Erken bitirme nedeniyle (Tamamlandı: %{completed} Toplam: %{total}), depozitonuz iade edilmeyecektir.",
         ["never_clocked_on"] = "Hiç mesaiye başlamadın!",
         ["all_occupied"] = "Tüm park yerleri dolu",
+        ["job"] = "İşi iş merkezinden almalısınız",
     },
     success = {
         ["clear_routes"] = "Kullanıcıların kayıtlı %{value} rotalası temizlendi",
