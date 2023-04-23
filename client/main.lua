@@ -13,7 +13,7 @@ local PZone = nil
 local listen = false
 local finished = false
 local continueworking = false
-local PlayerJob = {}
+local playerJob = {}
 -- Handlers
 
 -- Functions
@@ -497,7 +497,7 @@ RegisterNetEvent('qb-garbagejob:client:RequestPaycheck', function()
 end)
 
 RegisterNetEvent('qb-garbagejob:client:MainMenu', function()
-    if playerJob.name == Config.Jobname then 
+    if playerJob.name == Config.Jobname then
         local MainMenu = {}
         MainMenu[#MainMenu+1] = {isMenuHeader = true,header = Lang:t("menu.header")}
         MainMenu[#MainMenu+1] = { header = Lang:t("menu.collect"),txt = Lang:t("menu.return_collect"),params = { event = 'qb-garbagejob:client:RequestPaycheck',}}
