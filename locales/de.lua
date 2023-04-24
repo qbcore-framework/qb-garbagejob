@@ -6,10 +6,20 @@ local Translations = {
         ["too_far"] = "Du bist zu weit von der Abgabestelle entfernt",
         ["early_finish"] = "Wegen des frühen Endes (Abgeschlossen: %{completed} Maximal: %{total}), Wird ihre Kaution nicht zurückerstattet.",
         ["never_clocked_on"] = "Du hast nicht gearbeitet!",
+        ["all_occupied"] = "All parking spots are occupied",
+        ["job"] = "Sie müssen den Job beim Jobcenter bekommen",
     },
     success = {
         ["clear_routes"] = "Gelöschte Benutzerrouten, die sie hatten %{value} gespeicherte Routen",
         ["pay_slip"] = "Du hast $%{total}, Deine Gehaltsabrechnung %{deposit} wurde auf dein Bankkonto überwiesen!",
+        ["dispose_garbage"] = "Dispose Garbage Bag",
+    },
+    menu = {
+        ["header"] = "Garbage Main Menu",
+        ["collect"] = "Collect Paycheck",
+        ["return_collect"] = "Return truck and collect paycheck here!",
+        ["route"] = "Request Route",
+        ["request_route"] = "Request a garbage Route",
     },
     info = {
         ["payslip_collect"] = "~g~E~w~ - Gehalt",
@@ -34,6 +44,8 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} eingelagert)",
         ["store_truck"] =  "~g~E~w~ - Müllwagen Einparken",
         ["get_truck"] =  "~g~E~w~ - Müllwagen",
+        ["picking_bag"] = "Grabbing garbage bag..",
+        ["talk"] = "[E] Talk to Garbage Man",
     },
     warning = {},
 }

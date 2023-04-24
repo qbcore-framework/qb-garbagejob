@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local playerJob = nil
 local garbageVehicle = nil
 local hasBag = false
 local currentStop = 0
@@ -14,8 +13,10 @@ local PZone = nil
 local listen = false
 local finished = false
 local continueworking = false
-
+local playerJob = {}
 -- Handlers
+
+-- Functions
 
 local function setupClient()
     garbageVehicle = nil
@@ -26,7 +27,7 @@ local function setupClient()
     garbageObject = nil
     endBlip = nil
     currentStopNum = 0
-    if playerJob.name == "garbage" then
+    if playerJob.name == Config.Jobname then
         garbageBlip = AddBlipForCoord(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z)
         SetBlipSprite(garbageBlip, 318)
         SetBlipDisplay(garbageBlip, 4)
@@ -39,7 +40,7 @@ local function setupClient()
     end
 end
 
--- Functions
+
 
 local function LoadAnimation(dict)
     RequestAnimDict(dict)
@@ -496,13 +497,17 @@ RegisterNetEvent('qb-garbagejob:client:RequestPaycheck', function()
 end)
 
 RegisterNetEvent('qb-garbagejob:client:MainMenu', function()
-    local MainMenu = {}
-    MainMenu[#MainMenu+1] = {isMenuHeader = true,header = Lang:t("menu.header")}
-    MainMenu[#MainMenu+1] = { header = Lang:t("menu.collect"),txt = Lang:t("menu.return_collect"),params = { event = 'qb-garbagejob:client:RequestPaycheck',}}
-    if not garbageVehicle or finished then
-        MainMenu[#MainMenu+1] = { header = Lang:t("menu.route"), txt = Lang:t("menu.request_route"), params = { event = 'qb-garbagejob:client:RequestRoute',}}
+    if playerJob.name == Config.Jobname then
+        local MainMenu = {}
+        MainMenu[#MainMenu+1] = {isMenuHeader = true,header = Lang:t("menu.header")}
+        MainMenu[#MainMenu+1] = { header = Lang:t("menu.collect"),txt = Lang:t("menu.return_collect"),params = { event = 'qb-garbagejob:client:RequestPaycheck',}}
+        if not garbageVehicle or finished then
+            MainMenu[#MainMenu+1] = { header = Lang:t("menu.route"), txt = Lang:t("menu.request_route"), params = { event = 'qb-garbagejob:client:RequestRoute',}}
+        end
+        exports['qb-menu']:openMenu(MainMenu)
+    else
+        QBCore.Functions.Notify(Lang:t("error.job"))
     end
-    exports['qb-menu']:openMenu(MainMenu)
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
@@ -516,6 +521,14 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     if garbageBlip then
         RemoveBlip(garbageBlip)
     end
+    if endBlip then
+        RemoveBlip(endBlip)
+    end
+    if deliveryBlip then
+        RemoveBlip(deliveryBlip)
+    end
+    endBlip = nil
+    deliveryBlip = nil
     setupClient()
     spawnPeds()
 end)

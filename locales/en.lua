@@ -7,6 +7,7 @@ local Translations = {
         ["early_finish"] = "Due to early finish (Completed: %{completed} Total: %{total}), your deposit will not be returned.",
         ["never_clocked_on"] = "You never clocked on!",
         ["all_occupied"] = "All parking spots are occupied",
+        ["job"] = "You must get the job from the job center",
     },
     success = {
         ["clear_routes"] = "Cleared users routes they had %{value} routes stored",

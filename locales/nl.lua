@@ -7,6 +7,7 @@ local Translations = {
         ["early_finish"] = "Wegens vroege voltooiing (Voltooid: %{completed} Totaal: %{total}), wordt uw aanbetaling niet geretourneerd.",
         ["never_clocked_on"] = "Je hebt nooit ingeklokt!",
         ["all_occupied"] = "Alle parkeerplekken zijn bezet",
+        ["job"] = "U moet de baan krijgen van het arbeidsbureau",
     },
     success = {
         ["clear_routes"] = "Routes van gebruikers gewist, ze hadden %{value} routes opgeslagen",

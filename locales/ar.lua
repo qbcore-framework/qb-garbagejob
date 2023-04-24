@@ -5,11 +5,25 @@ local Translations = {
         ["not_enough"] = "(%{value} مطلوب) بيس لديك اموال كافية",
         ["too_far"] = "أنت بعيد جدًا عن نقطة الإنزال",
         ["early_finish"] = "(%{completed} أكملت: | %{total} المجموع:)",
-        ["never_clocked_on"] = "You never clocked on!",
+        ["never_clocked_on"] = "أنت لم تسجل شيئا!",
+        ["all_occupied"] = "جميع أماكن وقوف السيارات مشغولة",
+        ["job"] = "يجب أن تحصل علي الوظيفه من مركز الوظائف",
     },
     success = {
         ["clear_routes"] = "%{value} تم مسح مسار الطريق لـ",
         ["pay_slip"] = "($%{total} المجموع | %{deposit} القسيمة:) تم الدفع لحسابك المصرفي",
+    },
+    target = {
+        ["talk"] = 'تحدث إلى رجل القمامة',
+        ["grab_garbage"] = "انتزاع كيس القمامة",
+        ["dispose_garbage"] = "تخلص من كيس القمامة",
+    },
+    menu = {
+        ["header"] = "قائمة القمامة الرئيسية",
+        ["collect"] = "جمع الراتب",
+        ["return_collect"] = "قم بإرجاع الشاحنة وجمع شيك الراتب هنا!",
+        ["route"] = "طلب الطريق",
+        ["request_route"] = "اطلب طريق قمامة",
     },
     info = {
         ["payslip_collect"] = "~g~E~w~ - ﻞﻴﺼﺤﺗ",
@@ -34,6 +48,8 @@ local Translations = {
         ["payout_deposit"] = "(+ $%{value} الوديعة)",
         ["store_truck"] =  "~g~E~w~ - ﺔﻣﺎﻤﻘﻟﺍ ﺔﻨﺣﺎﺷ ﻦﻳﺰﺨﺗ",
         ["get_truck"] =  "~g~E~w~ - ﺔﻣﺎﻤﻘﻟﺍ ﺔﻨﺣﺎﺷ",
+        ["picking_bag"] = "انتزاع كيس القمامة..",
+        ["talk"] = "[E] تحدث إلى رجل القمامة",
     },
     warning = {},
 }
