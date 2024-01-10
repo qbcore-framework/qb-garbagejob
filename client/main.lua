@@ -459,7 +459,7 @@ RegisterNetEvent('qb-garbagejob:client:RequestRoute', function()
                             exports['LegacyFuel']:SetFuel(veh, 100.0)
                             SetVehicleFixed(veh)
                             SetEntityAsMissionEntity(veh, true, true)
-                            SetVehicleDoorsLocked(veh, 2)
+                            SetVehicleDoorsLocked(veh, 1)
                             currentStop = firstStop
                             currentStopNum = 1
                             amountOfBags = totalBags
