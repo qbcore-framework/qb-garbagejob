@@ -121,7 +121,7 @@ local function DeliverAnim()
         local pos = GetEntityCoords(ped)
         exports['qb-target']:RemoveTargetEntity(garbageVehicle)
         if (amountOfBags - 1) <= 0 then
-            QBCore.Functions.TriggerCallback('garbagejob:server:NextStop', function(hasMoreStops, nextStop, newBagAmount)
+            QBCore.Functions.TriggerCallback('qb-garbagejob:server:NextStop', function(hasMoreStops, nextStop, newBagAmount)
                 if hasMoreStops and nextStop ~= 0 then
                     -- Here he puts your next location and you are not finished working yet.
                     currentStop = nextStop
@@ -251,7 +251,7 @@ local function RunWorkLoop()
                                         canTakeBag = true
                                         -- Looks if you have delivered all bags
                                         if (amountOfBags - 1) <= 0 then
-                                            QBCore.Functions.TriggerCallback('garbagejob:server:NextStop', function(hasMoreStops, nextStop, newBagAmount)
+                                            QBCore.Functions.TriggerCallback('qb-garbagejob:server:NextStop', function(hasMoreStops, nextStop, newBagAmount)
                                                 if hasMoreStops and nextStop ~= 0 then
                                                     -- Here he puts your next location and you are not finished working yet.
                                                     currentStop = nextStop
@@ -438,13 +438,13 @@ end
 
 -- Events
 
-RegisterNetEvent('garbagejob:client:SetWaypointHome', function()
+RegisterNetEvent('qb-garbagejob:client:SetWaypointHome', function()
     SetNewWaypoint(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y)
 end)
 
 RegisterNetEvent('qb-garbagejob:client:RequestRoute', function()
-    if garbageVehicle then continueworking = true TriggerServerEvent('garbagejob:server:PayShift', continueworking) end
-    QBCore.Functions.TriggerCallback('garbagejob:server:NewShift', function(shouldContinue, firstStop, totalBags)
+    if garbageVehicle then continueworking = true TriggerServerEvent('qb-garbagejob:server:PayShift', continueworking) end
+    QBCore.Functions.TriggerCallback('qb-garbagejob:server:NewShift', function(shouldContinue, firstStop, totalBags)
         if shouldContinue then
             if not garbageVehicle then
                 local occupied = false
@@ -493,7 +493,7 @@ RegisterNetEvent('qb-garbagejob:client:RequestPaycheck', function()
         BringBackCar()
         QBCore.Functions.Notify(Lang:t("info.truck_returned"))
     end
-    TriggerServerEvent('garbagejob:server:PayShift')
+    TriggerServerEvent('qb-garbagejob:server:PayShift')
 end)
 
 RegisterNetEvent('qb-garbagejob:client:MainMenu', function()

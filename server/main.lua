@@ -5,7 +5,7 @@ local function CanPay(Player)
     return Player.PlayerData.money['bank'] >= Config.TruckPrice
 end
 
-QBCore.Functions.CreateCallback('garbagejob:server:NewShift', function(source, cb, continue)
+QBCore.Functions.CreateCallback('qb-garbagejob:server:NewShift', function(source, cb, continue)
     local Player = QBCore.Functions.GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
     local shouldContinue = false
@@ -52,21 +52,19 @@ RegisterNetEvent('qb-garbagejob:server:payDeposit', function()
     end
 end)
 
-QBCore.Functions.CreateCallback('garbagejob:server:NextStop', function(source, cb, currentStop, currentStopNum, currLocation)
+QBCore.Functions.CreateCallback('qb-garbagejob:server:NextStop', function(source, cb, currentStop, currentStopNum, currLocation)
     local Player = QBCore.Functions.GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
-
     local currStopCoords = Config.Locations['trashcan'][currentStop].coords
     currStopCoords = vector3(currStopCoords.x, currStopCoords.y, currStopCoords.z)
-
     local distance = #(currLocation - currStopCoords)
     local newStop = 0
     local shouldContinue = false
     local newBagAmount = 0
 
     if (math.random(100) >= Config.CryptoStickChance) and Config.GiveCryptoStick then
-        Player.Functions.AddItem('cryptostick', 1, false)
-        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['cryptostick'], 'add')
+        exports['qb-inventory']:AddItem(source, 'cryptostick', 1, false, false, 'qb-garbagejob:server:NextStop')
+        TriggerClientEvent('qb-inventory:client:ItemBox', source, QBCore.Shared.Items['cryptostick'], 'add')
         TriggerClientEvent('QBCore:Notify', source, Lang:t('info.found_crypto'))
     end
 
@@ -94,7 +92,7 @@ QBCore.Functions.CreateCallback('garbagejob:server:NextStop', function(source, c
     cb(shouldContinue, newStop, newBagAmount)
 end)
 
-QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, cb)
+QBCore.Functions.CreateCallback('qb-garbagejob:server:EndShift', function(source, cb)
     local Player = QBCore.Functions.GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
     local status = false
@@ -102,7 +100,7 @@ QBCore.Functions.CreateCallback('garbagejob:server:EndShift', function(source, c
     cb(status)
 end)
 
-RegisterNetEvent('garbagejob:server:PayShift', function(continue)
+RegisterNetEvent('qb-garbagejob:server:PayShift', function(continue)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local CitizenId = Player.PlayerData.citizenid
