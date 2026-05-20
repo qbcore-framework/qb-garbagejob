@@ -1,4 +1,5 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject({ 'Functions', 'Commands' })
+local sharedItems = exports['qb-core']:GetShared('Items')
 local Routes = {}
 
 local function CanPay(Player)
@@ -6,7 +7,7 @@ local function CanPay(Player)
 end
 
 QBCore.Functions.CreateCallback('qb-garbagejob:server:NewShift', function(source, cb, continue)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
     local shouldContinue = false
     local nextStop = 0
@@ -46,14 +47,14 @@ QBCore.Functions.CreateCallback('qb-garbagejob:server:NewShift', function(source
 end)
 
 RegisterNetEvent('qb-garbagejob:server:payDeposit', function()
-    local Player = QBCore.Functions.GetPlayer(source)
-    if not Player.Functions.RemoveMoney('bank', Config.TruckPrice, 'garbage-deposit') then
+    local Player = exports['qb-core']:GetPlayer(source)
+    if not Player.RemoveMoney('bank', Config.TruckPrice, 'garbage-deposit') then
         TriggerClientEvent('QBCore:Notify', source, Lang:t('error.not_enough', { value = Config.TruckPrice }), 'error')
     end
 end)
 
 QBCore.Functions.CreateCallback('qb-garbagejob:server:NextStop', function(source, cb, currentStop, currentStopNum, currLocation)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
     local currStopCoords = Config.Locations['trashcan'][currentStop].coords
     currStopCoords = vector3(currStopCoords.x, currStopCoords.y, currStopCoords.z)
@@ -64,7 +65,7 @@ QBCore.Functions.CreateCallback('qb-garbagejob:server:NextStop', function(source
 
     if (math.random(100) >= Config.CryptoStickChance) and Config.GiveCryptoStick then
         exports['qb-inventory']:AddItem(source, 'cryptostick', 1, false, false, 'qb-garbagejob:server:NextStop')
-        TriggerClientEvent('qb-inventory:client:ItemBox', source, QBCore.Shared.Items['cryptostick'], 'add')
+        TriggerClientEvent('qb-inventory:client:ItemBox', source, sharedItems['cryptostick'], 'add')
         TriggerClientEvent('QBCore:Notify', source, Lang:t('info.found_crypto'))
     end
 
@@ -93,7 +94,7 @@ QBCore.Functions.CreateCallback('qb-garbagejob:server:NextStop', function(source
 end)
 
 QBCore.Functions.CreateCallback('qb-garbagejob:server:EndShift', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     local CitizenId = Player.PlayerData.citizenid
     local status = false
     if Routes[CitizenId] ~= nil then status = true end
@@ -102,7 +103,7 @@ end)
 
 RegisterNetEvent('qb-garbagejob:server:PayShift', function(continue)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     local CitizenId = Player.PlayerData.citizenid
     if Routes[CitizenId] ~= nil then
         local depositPay = Routes[CitizenId].depositPay
@@ -119,7 +120,7 @@ RegisterNetEvent('qb-garbagejob:server:PayShift', function(continue)
             payoutDeposit = ''
         end
 
-        Player.Functions.AddMoney('bank', totalToPay, 'garbage-payslip')
+        Player.AddMoney('bank', totalToPay, 'garbage-payslip')
         TriggerClientEvent('QBCore:Notify', src, Lang:t('success.pay_slip', { total = totalToPay, deposit = payoutDeposit }), 'success')
         Routes[CitizenId] = nil
     else
@@ -128,7 +129,7 @@ RegisterNetEvent('qb-garbagejob:server:PayShift', function(continue)
 end)
 
 QBCore.Commands.Add('cleargarbroutes', 'Removes garbo routes for user (admin only)', { { name = 'id', help = 'Player ID (may be empty)' } }, false, function(source, args)
-    local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    local Player = exports['qb-core']:GetPlayer(tonumber(args[1]))
     local CitizenId = Player.PlayerData.citizenid
     local count = 0
     for k, _ in pairs(Routes) do

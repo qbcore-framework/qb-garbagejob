@@ -18,7 +18,7 @@ client_script {
 	'@PolyZone/EntityZone.lua',
 	'@PolyZone/CircleZone.lua',
 	'@PolyZone/ComboZone.lua',
-	'client/main.lua'
+	'client.lua'
 }
 
-server_script 'server/main.lua'
+server_script 'server.lua'
